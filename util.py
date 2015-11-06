@@ -15,7 +15,8 @@ def savePickle(object, name):
 def getMostRecentPickle(name):
     fileNames = [f for f in os.listdir(PICKLE_DIR) if name in f]
     if len(fileNames) != 0:
-        sorted(fileNames).reverse()
+        fileNames.sort()
+        fileNames.reverse()
         with open(path.join(PICKLE_DIR, fileNames[0]), "r") as pickleFile:
             return pickle.load(pickleFile)
     else:
