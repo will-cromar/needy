@@ -20,24 +20,33 @@ def getCopperPrices():
     return prices
 
 def preprocessPrices(prices):
-    labels = [[i[0].year, i[0].month] for i in prices]
-    features = [float(i[1]) for i in prices]
+    X = [[i[0].year, i[0].month] for i in prices]
+    y = [float(i[1]) for i in prices]
 
-    return labels, features
+    return X, y
 
 #Tests out different regressors in regs
 #not finished
 def test(regs):
     prices = getCopperPrices()
-    labels, features = preprocessPrices(prices)
-    labels_train, labels_test, features_train, features_test = \
-        train_test_split(labels, features, test_size=.2, random_state = 42)
+    X, y = preprocessPrices(prices)
+    X_train, X_test, y_train, y_test = \
+        train_test_split(X, y, test_size=.2, random_state = 42)
+
+    #print X_train
+    #print X_test
+    #print y_train
+    #print y_test
 
     for entry in regs:
         name = entry[0]
         reg = entry[1]
 
-    return None
+        print name
+        reg.fit(X_train, y_train)
+        print "Test score: ", reg.score(X_test, y_test)
+        print "Train score: ", reg.score(X_train, y_train)
 
 regs = [("Decision tree: ", tree.DecisionTreeRegressor()),
         ("Support vector regressor: ", svm.SVR())]
+test(regs)
