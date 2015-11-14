@@ -22,12 +22,17 @@ def getMostRecentPickle(name):
     else:
         return None
 
+def pickleExists(name):
+    fileNames = [f for f in os.listdir(PICKLE_DIR) if name in f]
+    return not len(fileNames) == 0
+
 #Testing code. Run this once to make sure it works
-#obj1 = "Less recent"
-#obj2 = "More recent"
+def doesItWork():
+    obj1 = "Less recent"
+    obj2 = "More recent"
 
-#savePickle(obj1, "stringtest")
-#time.sleep(20)
-#savePickle(obj2, "stringtest")
+    savePickle(obj1, "stringtest")
+    time.sleep(20)
+    savePickle(obj2, "stringtest")
 
-#print getMostRecentPickle("stringtest")
+    print getMostRecentPickle("stringtest")
