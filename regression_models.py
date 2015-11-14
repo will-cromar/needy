@@ -5,7 +5,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn import linear_model
 from regression_graphs import graphRegressionsOverTime
 
-#Takes an iterable containing tuples of the form (name, model, graph color)
+
+# Takes an iterable containing tuples of the form (name, model, graph color)
 def runRegressions(regs, X, y):
     results = []
 
