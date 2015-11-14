@@ -23,11 +23,11 @@ def getMostRecentPickle(name):
         return None
 
 #Testing code. Run this once to make sure it works
-obj1 = "Less recent"
-obj2 = "More recent"
+#obj1 = "Less recent"
+#obj2 = "More recent"
 
-savePickle(obj1, "stringtest")
-time.sleep(20)
-savePickle(obj2, "stringtest")
+#savePickle(obj1, "stringtest")
+#time.sleep(20)
+#savePickle(obj2, "stringtest")
 
-print getMostRecentPickle("stringtest")
+#print getMostRecentPickle("stringtest")
