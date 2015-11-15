@@ -10,8 +10,11 @@ from regression_graphs import graphRegressionsOverTime
 def runRegressions(regs, X, y):
     results = []
 
+    #X_train = X[:-20]
+    #y_train = y[:-20]
+
     X_train, X_test, y_train, y_test = \
-        train_test_split(X, y, test_size=.2, random_state = 42)
+        train_test_split(X, y, test_size=.33, random_state = 42)
 
     for entry in regs:
         name, reg, color = entry
@@ -23,8 +26,8 @@ def runRegressions(regs, X, y):
 
         regression = {}
         regression["name"] = name
-        regression["testData"] = X_test
-        regression["predictions"] = reg.predict(X_test)
+        regression["testData"] = X
+        regression["predictions"] = reg.predict(X)
         regression["graphColor"] = color
         results.append(regression)
 
@@ -34,9 +37,11 @@ def runRegressions(regs, X, y):
 rawData = getCopperPrices()
 X, y = preprocessPrices(rawData)
 
-regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_split=100, max_depth=10), "r"),
-        ("Linear regression", linear_model.LinearRegression(), "b"),
-        ("SVR", svm.SVR(), "g")]
+min_samples = .025 * len(X)
+
+regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r"),
+        ("Linear regression", linear_model.LinearRegression(), "b")]
+        #("SVR", svm.SVR(), "g")]
 
 regressions = runRegressions(regs, X, y)
 graphRegressionsOverTime(X, y, regressions)
