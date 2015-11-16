@@ -1,4 +1,4 @@
-import newspaper
+4import newspaper
 import time
 
 t0 = time.clock()
