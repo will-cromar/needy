@@ -1,45 +1,50 @@
 # luke
 
-from pybrain.datasets import SupervisedDataSet
+from pybrain.datasets import SupervisedDataSet, SequentialDataSet
 from pybrain.tools.shortcuts import buildNetwork
-from pybrain.supervised.trainers import BackpropTrainer
+from pybrain.supervised.trainers import BackpropTrainer, Trainer
 from pybrain.structure.modules import TanhLayer, LinearLayer
-from pybrain.structure import RecurrentNetwork, LinearLayer, FullConnection
+from pybrain.structure import RecurrentNetwork, LinearLayer, FullConnection, SigmoidLayer
 
 import time
-
+top = 30
 features = []
-for i in range(0, 100):
+for i in range(0, top):
     features.append(i)
 
 labels = []
-for i in range(0, 100):
-    labels.append(i+1)
+for i in range(0, top):
+    labels.append((i/2.0))
 
-ds = SupervisedDataSet(1, 1)
-for i in range(0, 100):
-    ds.appendLinked( features[i], labels[i])
+
+ds = SupervisedDataSet(1,1)
+for i in range(0, top):
+   ds.appendLinked(features[i], labels[i])
+
+
+#TrainDS, TestDS = ds.splitWithProportion(0.8)
 
 # for input, target in ds:
 #    print input, target
 
 # net = buildNetwork(1, 3, 1, bias=True, hiddenclass=TanhLayer)
-# trainer = BackpropTrainer(net, ds)
 
-rnn = RecurrentNetwork()
-rnn.addInputModule(LinearLayer(1, 'in'));
-rnn.addModule(LinearLayer(3,'hidden'));
-rnn.addOutputModule(LinearLayer(1,'out'));
-rnn.addConnection(FullConnection(rnn['in'],rnn['hidden'],'feed'));
-rnn.addConnection(FullConnection(rnn['hidden'],rnn['out'],'give'));
-rnn.addRecurrentConnection(FullConnection(rnn['hidden'],rnn['hidden'],'hide'));
-rnn.sortModules();
+# rnn = RecurrentNetwork()
+rnn = buildNetwork(1, 25, 1, bias=True, recurrent=True, hiddenclass=SigmoidLayer)
+# rnn.addInputModule(LinearLayer(1, 'in'));
+# rnn.addModule(SigmoidLayer(25,'hidden'));
+# rnn.addOutputModule(LinearLayer(1,'out'));
+# rnn.addConnection(FullConnection(rnn['in'],rnn['hidden'],'feed'));
+# rnn.addConnection(FullConnection(rnn['hidden'],rnn['out'],'give'));
+# rnn.addRecurrentConnection(FullConnection(rnn['hidden'],rnn['hidden'],'hide'));
+# rnn.sortModules();
+trainer = BackpropTrainer(rnn, ds, learningrate=0.0000001)
 
+runs = 10000
+for i in range(1,runs):
+    print ((i/(runs*1.0)) *100)
+    print trainer.train()
+    rnn.reset()
 
-trainer = BackpropTrainer(rnn, dataset=ds)
-for i in range(1,1000):
-    trainer.train()
-    print i
-
-for i in range(1, 10):
-     print (i, " ", rnn.activate(i))
+for i in range(top*2,-1,-1):
+    print (i,rnn.activate(i))
