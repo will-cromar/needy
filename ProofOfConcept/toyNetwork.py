@@ -1,6 +1,3 @@
-__author__ = 'tylervanharen'
-
-
 class Neuron:
     'Represents a neuron'
     currentVal = 0
@@ -10,9 +7,10 @@ class Neuron:
     def displayVal(self):
         print(self.identity,":",self.currentVal)
         for c in self.connections:
-            print(" connected to ",c.end.identity)
+            print(self.identity," connected to ",c.end.identity)
 
     def addSynapse(self,destination):
+        print(self.identity," connecting to ",destination.identity)
         connection = Synapse()
         connection.start = self
         connection.end = destination
@@ -39,32 +37,33 @@ class Synapse:
     end = Neuron()
     modifier = .75
 
-numLayers = 3
+numLayers = 5
 nodesPerLayer = 3
 layers = []
 
 first = Neuron()
 firstlayer = [first]
 layers.append(firstlayer)
-for i in range(0, numLayers, 1):
+for i in range(1, numLayers-1, 1):
     hiddenLayer = []
     for j in range(0, nodesPerLayer, 1):
         new = Neuron()
         new.identity = i*nodesPerLayer+j
         hiddenLayer.append(new)
+        print(layers[len(layers)-1])
         for k in layers[i - 1]:
-
             k.addSynapse(new)
-        layers.append(hiddenLayer)
+    layers.append(hiddenLayer)
 
-finalayer = []
+finaLayer = []
 final = Neuron()
-final.identity=numLayers*nodesPerLayer
-finalayer.append(final)
+final.identity=numLayers*nodesPerLayer+1
+finaLayer.append(final)
 for k in layers[layers.__len__()-1]:
     k.addSynapse(final)
-layers.append(finalayer)
+layers.append(finaLayer)
 all = []
+
 for i in range(0,layers.__len__(),1):
     for j in layers[i]:
         all.append(j)
