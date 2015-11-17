@@ -5,6 +5,7 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer, Trainer
 from pybrain.structure.modules import TanhLayer, LinearLayer
 from pybrain.structure import RecurrentNetwork, LinearLayer, FullConnection, SigmoidLayer
+import matplotlib.pyplot as plt
 
 import time
 top = 100
@@ -40,12 +41,35 @@ rnn = buildNetwork(1, 25, 1, bias=True, recurrent=True, hiddenclass=SigmoidLayer
 # rnn.sortModules();
 trainer = BackpropTrainer(rnn, ds, learningrate=0.00005)
 
+xAxisRuns = []
+yAxisRuns = []
+xAxisData = []
+yAxisData = []
+
 runs = 100
 for i in range(1,runs):
     print ((i/(runs*1.0)) *100)
-    print trainer.train()
+    #print trainer.train()
     rnn.reset()
+    xAxisRuns.append(i)
+    yAxisRuns.append(trainer.train())
+
+for i in range(top,1,-1):
+    #print (i,rnn.activate(i))
+    xAxisData.append(i)
+    yAxisData.append((((i/2.0) - rnn.activate(i))/(i/2.0)*100.0))
 
 
-for i in range(top,-1,-1):
-    print (i,rnn.activate(i))
+plt.figure(1)
+plt.subplot(2, 1, 1)
+plt.plot(xAxisRuns, yAxisRuns, 'bo')
+plt.xlabel('Epoch Number')
+plt.ylabel('Error Value')
+
+plt.subplot(2, 1, 2)
+plt.plot(xAxisData, yAxisData, 'ro')
+plt.xlabel('Input Number')
+plt.ylabel('Percent Error')
+plt.ylim(-100, 100)
+
+plt.show()
