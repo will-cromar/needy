@@ -32,11 +32,23 @@ def getStockPrices(ticker, frequency="monthly", update=False):
 
     return prices.get("Close")
 
+# prices = pandas time series
+# before = lower limit
+# after = upper limit
+def getDateRange(prices, before, after):
+    return prices.truncate(before=before, after=after)
+
 def preprocessStocks(priceData):
-    timestamps = [[row[0].toordinal()] for row in priceData.iteritems()]
-    prices = [float(row[1]) for row in priceData.iteritems()]
+    timestamps = []
+    prices = []
+    for row in priceData.iteritems():
+        timestamps.append([row[0].toordinal()])
+        prices.append(float(row[1]))
+    #timestamps = [[row[0].toordinal()] for row in priceData.iteritems()]
+    #prices = [float(row[1]) for row in priceData.iteritems()]
 
     return timestamps, prices
+
 
 # Try out the new stock price grabber/preprocessor with google's data
 def test():
