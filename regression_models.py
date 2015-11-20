@@ -1,4 +1,5 @@
 from sklearn.cross_validation import train_test_split
+from sklearn import linear_model
 
 class Dataset:
     def __init__(self, dates, prices, label, graphColor="k", mode="sklearn"):
@@ -14,6 +15,10 @@ class Dataset:
 
     def dumpData(self):
         return self.dates, self.prices, self.label, self.graphColor
+
+    def getXY(self, mode="sklearn"):
+        if mode == "sklearn":
+            return [[date] for date in self.dates], self.prices
 
 
 # Takes an iterable containing tuples of the form (name, model, graph color)
@@ -40,3 +45,19 @@ def runRegressions(regs, X, y):
         results.append(regression)
 
     return results
+
+def extendGraphByN(X, n):
+    end = X[-1][0] + 1
+    extension = map(lambda i: [i], range(end + 1, end + n))
+    return X + extension
+
+def graphRecentTrend(X, y, samples=12):
+    X = X[-samples:]
+    y = y[-samples:]
+
+    reg = linear_model.LinearRegression()
+    reg.fit(X, y)
+    domain = extendGraphByN(X, samples)
+    pred = reg.predict(domain)
+
+    return Dataset(domain, pred, "Recent trend")

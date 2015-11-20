@@ -24,7 +24,7 @@ def graphRegressionsOverTime(ground_truth, *regression_plots, **kwargs):
     # Unpack kwargs
     title = kwargs.get("title", "Un-named graph")
     xlabel = kwargs.get("xlabel", "Dates")
-    ylabel = kwargs.get("ylabel", "prices")
+    ylabel = kwargs.get("ylabel", "Prices")
 
     # Label and display graph
     pyplot.title(title)
