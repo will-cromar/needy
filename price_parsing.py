@@ -1,6 +1,5 @@
 import util
 import Quandl
-import regression_models
 
 COPPER_PRICES_NAME = "imf_copper_monthly"
 STOCK_DATA_SOURCE = "YAHOO/" # Yahoo seems like a good source

@@ -1,8 +1,4 @@
-#from price_parsing import getCopperPrices, preprocessCopperPrices
-from sklearn import tree
 from sklearn.cross_validation import train_test_split
-from sklearn import linear_model
-from regression_graphs import graphRegressionsOverTime
 
 class Dataset:
     def __init__(self, dates, prices, label, graphColor="k", mode="sklearn"):
@@ -38,11 +34,9 @@ def runRegressions(regs, X, y):
         print "Test score:", reg.score(X_test, y_test)
         print "Train score:", reg.score(X_train, y_train)
 
-        regression = {}
-        regression["name"] = name
-        regression["testData"] = X
-        regression["predictions"] = reg.predict(X)
-        regression["graphColor"] = color
+        pred = reg.predict(X)
+
+        regression = Dataset(X, pred, name, graphColor=color)
         results.append(regression)
 
     return results
