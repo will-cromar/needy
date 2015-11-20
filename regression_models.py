@@ -1,4 +1,4 @@
-from copper_prices import getCopperPrices, preprocessPrices
+from price_parsing import getCopperPrices, preprocessCopperPrices
 from sklearn import tree
 from sklearn import svm
 from sklearn.cross_validation import train_test_split
@@ -33,15 +33,15 @@ def runRegressions(regs, X, y):
 
     return results
 
+def test():
+    rawData = getCopperPrices()
+    X, y = preprocessCopperPrices(rawData)
+    min_samples = .025 * len(X)
 
-rawData = getCopperPrices()
-X, y = preprocessPrices(rawData)
+    regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r"),
+            ("Linear regression", linear_model.LinearRegression(), "b")
+            ]
+    #        ("SVR", svm.SVR(), "g")]
 
-min_samples = .025 * len(X)
-
-regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r"),
-        ("Linear regression", linear_model.LinearRegression(), "b")]
-        #("SVR", svm.SVR(), "g")]
-
-regressions = runRegressions(regs, X, y)
-graphRegressionsOverTime(X, y, regressions)
+    regressions = runRegressions(regs, X, y)
+    graphRegressionsOverTime(X, y, regressions)
