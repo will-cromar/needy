@@ -1,9 +1,23 @@
-from price_parsing import getCopperPrices, preprocessCopperPrices
+#from price_parsing import getCopperPrices, preprocessCopperPrices
 from sklearn import tree
-from sklearn import svm
 from sklearn.cross_validation import train_test_split
 from sklearn import linear_model
 from regression_graphs import graphRegressionsOverTime
+
+class Dataset:
+    def __init__(self, dates, prices, label, graphColor="k", mode="sklearn"):
+        if mode == "sklearn":
+            self.dates = [date[0] for date in dates]
+            self.prices = prices
+        elif mode == "preformatted":
+            self.dates = dates
+            self.prices = prices
+
+        self.label = label
+        self.graphColor = graphColor
+
+    def dumpData(self):
+        return self.dates, self.prices, self.label, self.graphColor
 
 
 # Takes an iterable containing tuples of the form (name, model, graph color)
@@ -32,16 +46,3 @@ def runRegressions(regs, X, y):
         results.append(regression)
 
     return results
-
-def test():
-    rawData = getCopperPrices()
-    X, y = preprocessCopperPrices(rawData)
-    min_samples = .025 * len(X)
-
-    regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r"),
-            ("Linear regression", linear_model.LinearRegression(), "b")
-            ]
-    #        ("SVR", svm.SVR(), "g")]
-
-    regressions = runRegressions(regs, X, y)
-    graphRegressionsOverTime(X, y, regressions)

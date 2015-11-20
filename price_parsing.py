@@ -1,5 +1,6 @@
 import util
 import Quandl
+import regression_models
 
 COPPER_PRICES_NAME = "imf_copper_monthly"
 STOCK_DATA_SOURCE = "YAHOO/" # Yahoo seems like a good source
@@ -48,18 +49,3 @@ def preprocessStocks(priceData):
     #prices = [float(row[1]) for row in priceData.iteritems()]
 
     return timestamps, prices
-
-
-# Try out the new stock price grabber/preprocessor with google's data
-def test():
-    data = getStockPrices("GOOG", frequency="daily")
-    times, prices = preprocessStocks(data)
-    print times
-    print prices
-
-    from regression_graphs import graphRegressionsOverTime
-    graphRegressionsOverTime(times, prices, [])
-
-test()
-
-#print data.data
