@@ -1,5 +1,6 @@
 from datetime import datetime
 from matplotlib import pyplot
+import time
 
 # Takes one Datasets for ground truth and an arbitrary number of regression
 # plots as Datasets
@@ -31,4 +32,4 @@ def graphRegressionsOverTime(ground_truth, *regression_plots, **kwargs):
     pyplot.xlabel(xlabel)
     pyplot.ylabel(ylabel)
     pyplot.legend()
-    pyplot.show()
+    pyplot.savefig(str(time.time()) + ".png")
