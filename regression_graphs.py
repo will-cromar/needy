@@ -1,10 +1,11 @@
 from datetime import datetime
 from matplotlib import pyplot
+
 import time
 
 # Takes one Datasets for ground truth and an arbitrary number of regression
 # plots as Datasets
-def graphRegressionsOverTime(ground_truth, *regression_plots, **kwargs):
+def graphRegressionsOverTime(company,ground_truth, *regression_plots, **kwargs):
     # Initialize the plot
     pyplot.figure()
 
@@ -31,5 +32,5 @@ def graphRegressionsOverTime(ground_truth, *regression_plots, **kwargs):
     pyplot.title(title)
     pyplot.xlabel(xlabel)
     pyplot.ylabel(ylabel)
-    pyplot.legend()
-    pyplot.savefig(str(time.time()) + ".png")
+    #pyplot.legend()
+    pyplot.savefig(company + ".png")
