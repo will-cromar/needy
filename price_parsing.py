@@ -1,43 +1,74 @@
 import util
 import Quandl
 
-STOCK_DATA_SOURCE = "YAHOO/" # Yahoo seems like a good source
+# For the moment, we're using Yahoo Finance as our source
+STOCK_DATA_SOURCE = "YAHOO/"
 
 def getStockPrices(ticker, frequency="monthly", update=False):
-    name = ticker + "_" + frequency
+    """
+    Gets the closing prices for a given stock ticker at a given frequency
+    :param ticker: Name of the company's ticker
+    :param frequency: Frequency of returned time series. See Quandl.get()'s collapse param.
+    :param update: Always updates instead of using cache if true
+    :return: Pandas dataframe representing time series of ticker's closing prices
+    """
+    name = ticker + "_" + frequency # Name of data in cache
     prices = None
+    # If there is no cached version of the pickle, or update flag is on, download price data and cache it
     if update or not util.pickleExists(name):
         prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, authtoken="xx_T2u2fsQ_MjyZjTb6E")
         util.savePickle(prices, name)
+    # Otherwise, use most recent cache entry
     else:
         prices = util.getMostRecentPickle(name)
 
+    # Return closing prices
     return prices.get("Close")
 
+# TODO: Merge with getStockPrices
 def getStockPriceDifferentials(ticker, frequency="monthly", update=False):
-    name = ticker + "_differentials_" + frequency
+    """
+    Gets the percent differential of the closing prices for a given ticker
+    :param ticker: Name of the company's ticker
+    :param frequency: Frequency of returned time series. See Quandl.get()'s collapse param.
+    :param update: Always updates instead of using cache if true
+    :return: Pandas dataframe representing a time series of the closing price differentials for a ticker
+    """
+    name = ticker + "_differentials_" + frequency # Name of data in cache
     prices = None
+    # If there is no cached version of the pickle, or update flag is on, download price data and cache it
     if update or not util.pickleExists(name):
         prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, transform="rdiff", authtoken="xx_T2u2fsQ_MjyZjTb6E")
         util.savePickle(prices, name)
+    # Otherwise, use most recent cache entry
     else:
         prices = util.getMostRecentPickle(name)
 
     return prices.get("Close")
 
-# prices = pandas time series
-# before = lower limit
-# after = upper limit
 def getDateRange(prices, before, after):
+    """
+    Takes a pandas dataframe and truncates it to include only dates between before and after
+    :param prices: Pandas dataframe representing a time series
+    :param before: Datetime-like object representing the lower limit
+    :param after: Datetime-like object representing the upper limit
+    :return: Truncated Pandas dataframe
+    """
     return prices.truncate(before=before, after=after)
 
 def preprocessStocks(priceData):
+    """
+    Processes priceData into a format usable by sklearn
+    :param priceData: Pandas dataframe representing a time series of prices
+    :return: List of ordinal dates, list of float prices
+    """
     timestamps = []
     prices = []
-    for row in priceData.iteritems():
-        timestamps.append([row[0].toordinal()])
-        prices.append(float(row[1]))
-    #timestamps = [[row[0].toordinal()] for row in priceData.iteritems()]
-    #prices = [float(row[1]) for row in priceData.iteritems()]
 
+    # For every tuple of (date, price) in priceData...
+    for row in priceData.iteritems():
+        timestamps.append([row[0].toordinal()]) # Convert date to ordinal and wrap in list
+        prices.append(float(row[1]))            # Convert price to float
+
+    # Return in form X, y
     return timestamps, prices
