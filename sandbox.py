@@ -50,5 +50,9 @@ def recentTrendTest():
 
     graphRegressionsOverTime(dataset, recentTrend, title="Test of recent trends")
 
+getStockPrices("GOOGL", update=True, frequency="daily")
+getStockPrices("AAPL", update=True, frequency="daily")
 test()
 recentTrendTest()
+getStockPrices("GOOGL", update=True, frequency="daily")
+getStockPrices("AAPL", update=True, frequency="daily")
