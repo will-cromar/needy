@@ -56,6 +56,9 @@ def getDateRange(prices, before, after):
     """
     return prices.truncate(before=before, after=after)
 
+def splitByDate(prices, date):
+    return prices.truncate(after=date), prices.truncate(before=date)
+
 def preprocessStocks(priceData):
     """
     Processes priceData into a format usable by sklearn
@@ -67,7 +70,7 @@ def preprocessStocks(priceData):
 
     # For every tuple of (date, price) in priceData...
     for row in priceData.iteritems():
-        timestamps.append([row[0].toordinal()]) # Convert date to ordinal and wrap in list
+        timestamps.append(row[0].toordinal()) # Convert date to ordinal
         prices.append(float(row[1]))            # Convert price to float
 
     # Return in form X, y

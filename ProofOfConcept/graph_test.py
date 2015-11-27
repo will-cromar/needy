@@ -3,89 +3,130 @@
 from pybrain.datasets import SupervisedDataSet, SequentialDataSet
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer, Trainer
-from pybrain.structure.modules import TanhLayer, LinearLayer
-from pybrain.structure import RecurrentNetwork, LinearLayer, FullConnection, SigmoidLayer
+from pybrain.structure.modules import TanhLayer, LinearLayer, MdrnnLayer, LSTMLayer, GaussianLayer, SoftmaxLayer
 import matplotlib.pyplot as plt
-
 import time
-top = 100
-features = []
-for i in range(0, top):
-    features.append(i)
+from normalizer import normalize
+from normalizer import denormalize
+from price_parsing import *
+from util import *
 
-labels = []
-for i in range(0, top):
-    labels.append((i/2.0))
+xTrain = []
+yTrain = []
+xTest = []
+yTest = []
+pred = []
 
+data = getStockPrices("AXP", frequency="daily")
+trainData, testData = splitByDate(data, '9/21/2015')
+xTrain, yTrain = preprocessStocks(trainData)
+xTest, yTest = preprocessStocks(testData)
 
+# xTrain, yTrain = preprocessStocks(data)
+# xTest = xTrain
+# yTest = yTrain
+
+xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor = normalize(xTrain, yTrain, xTest, yTest)
+print xTrain
+print yTrain
+print xTest
+print yTest
+print priceScaleFactor
+print timeScaleFactor
+
+# build data set from x training data and y training data
 ds = SupervisedDataSet(1,1)
-for i in range(0, top):
-   ds.appendLinked(features[i], labels[i])
+for i in range(0, len(xTrain)):
+   ds.appendLinked(xTrain[i], yTrain[i])
+
+# number of runs
+runs = 100
+
+# # top of range of numbers to generate
+# top = 100
+#
+# # generate x training data
+# for i in range(0, top):
+#     xTrain.append(i)
+#
+# # generate y training data
+# for i in range(0, top):
+#     yTrain.append((i/2.0))
+#
+# # generate x testing data
+# for i in range(0, top, 0.5):
+#     xTest.append(i)
+#
+# # generate y testing data
+# for i in range(0, top, 0.5):
+#     yTest.append(i/2.0)
 
 
-#TrainDS, TestDS = ds.splitWithProportion(0.8)
+rnn = buildNetwork(1, 10, 10, 10, 10, 10, 1, bias=True, recurrent=True, hiddenclass=TanhLayer)
+trainer = BackpropTrainer(rnn, ds, learningrate=0.05)
 
-# for input, target in ds:
-#    print input, target
+EpochNumber = []
+epochTimes = []
+ErrorValues = []
+percentError = []
 
-# net = buildNetwork(1, 3, 1, bias=True, hiddenclass=TanhLayer)
-
-# rnn = RecurrentNetwork()
-rnn = buildNetwork(1, 25, 1, bias=True, recurrent=True, hiddenclass=SigmoidLayer)
-# rnn.addInputModule(LinearLayer(1, 'in'));
-# rnn.addModule(SigmoidLayer(25,'hidden'));
-# rnn.addOutputModule(LinearLayer(1,'out'));
-# rnn.addConnection(FullConnection(rnn['in'],rnn['hidden'],'feed'));
-# rnn.addConnection(FullConnection(rnn['hidden'],rnn['out'],'give'));
-# rnn.addRecurrentConnection(FullConnection(rnn['hidden'],rnn['hidden'],'hide'));
-# rnn.sortModules();
-trainer = BackpropTrainer(rnn, ds, learningrate=0.00001)
-
-xAxisRuns = []
-yAxisRuns = []
-xAxisData = []
-yAxisData = []
-
-runs = 500
 totalTimeStart = time.time()
 for i in range(1,runs):
     print ((i/(runs*1.0)) *100)
     startEpochTime = time.time()
-    rnn.reset()
-    xAxisRuns.append(i)
-    yAxisRuns.append(trainer.train())
-    if i == 10:
-        endEpochTime = time.time()
-        timePerEpoch = (endEpochTime - startEpochTime)/10.0
+    EpochNumber.append(i)
+    ErrorValues.append(trainer.train())
+    endEpochTime = time.time()
+    epochTimes.append(endEpochTime - startEpochTime)
+
 totalTimeEnd = time.time()
 totalTime = (totalTimeEnd - totalTimeStart)
 
-for i in range(top,1,-1):
-    #print (i,rnn.activate(i))
-    xAxisData.append(i)
-    yAxisData.append((((i/2.0) - rnn.activate(i))/(i/2.0)*100.0))
+timePerEpoch = sum(epochTimes)/len(epochTimes)
 
-averageError = sum(yAxisData) / float(len(yAxisData))
+# make predictions with network
+for i in xTest:
+    pred.append(rnn.activate(i))
+
+pred2 = []
+for i in xTrain:
+    pred2.append(rnn.activate(i))
+
+# denormalize
+# xTrain, yTrain, xTest, yTest = denormalize(xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor)
+
+# calculate percent error
+for i in range(0, len(yTest)):
+    percentError.append(abs((yTest[i] - pred[i])/yTest[i]))
+
+sumPercentError = sum(percentError)
+averageError = sumPercentError / len(percentError)
 
 plt.figure(1)
-plt.subplot(3, 1, 1)
-plt.plot(xAxisRuns, yAxisRuns, 'bo')
+plt.subplot(4, 1,1)
+plt.plot(EpochNumber, ErrorValues, 'bo')
 plt.xlabel('Epoch Number')
 plt.ylabel('Error Value')
 
-plt.subplot(3, 1, 2)
-plt.plot(xAxisData, yAxisData, 'ro')
-plt.xlabel('Input Number')
-plt.ylabel('Percent Error')
-plt.ylim(-100, 100)
+plt.subplot(4, 1, 2)
+plt.plot(xTest, yTest, 'ro')
+plt.plot(xTest, pred, 'go')
+plt.xlabel('xTest')
+plt.ylabel('yTest')
 
-plt.subplot(3,1,3)
+plt.subplot(4, 1, 3)
+plt.plot(xTrain, yTrain, 'ro')
+plt.plot(xTrain, pred2, 'go')
+plt.xlabel('xTrain')
+plt.ylabel('yTrain')
+
+plt.subplot(4, 1, 4)
 plt.text(0.02, 0.85, 'Hello', fontsize=12)
 plt.text(0.02, 0.70, 'Number of Epochs  = ' + str(runs), fontsize=12)
-plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(features)), fontsize=12)
+plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(xTrain)), fontsize=12)
 plt.text(0.02, 0.40, 'Time per Epoch = ' + str(timePerEpoch) + 's   Total Time = ' + str(totalTime) + 's', fontsize=12)
-plt.text(0.02, 0.25, 'Average Percent Error Value = ' + str(averageError), fontsize=12)
-plt.text(0.02, 0.10, 'Minimum Error Value = ' + str(min(yAxisRuns)), fontsize=12)
+plt.text(0.02, 0.25, 'Average Absolute Percent Error Value = ' + str(averageError), fontsize=12)
+plt.text(0.02, 0.10, 'Minimum Error Value = ' + str(min(percentError)), fontsize=12)
 
 
 plt.show()
