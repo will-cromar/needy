@@ -22,6 +22,8 @@ trainData, testData = splitByDate(data, '9/21/2015')
 xTrain, yTrain = preprocessStocks(trainData)
 xTest, yTest = preprocessStocks(testData)
 
+del xTest[0]
+del yTest[0]
 # xTrain, yTrain = preprocessStocks(data)
 # xTest = xTrain
 # yTest = yTrain
@@ -40,7 +42,7 @@ for i in range(0, len(xTrain)):
    ds.appendLinked(xTrain[i], yTrain[i])
 
 # number of runs
-runs = 100
+runs = 5000
 
 # # top of range of numbers to generate
 # top = 100
@@ -63,7 +65,7 @@ runs = 100
 
 
 rnn = buildNetwork(1, 10, 10, 10, 10, 10, 1, bias=True, recurrent=True, hiddenclass=TanhLayer)
-trainer = BackpropTrainer(rnn, ds, learningrate=0.05)
+trainer = BackpropTrainer(rnn, ds, learningrate=0.1)
 
 EpochNumber = []
 epochTimes = []
@@ -93,11 +95,11 @@ for i in xTrain:
     pred2.append(rnn.activate(i))
 
 # denormalize
-# xTrain, yTrain, xTest, yTest = denormalize(xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor)
+xTrain, yTrain, xTest, yTest, pred, pred2 = denormalize(xTrain, yTrain, xTest, yTest, pred, pred2, priceScaleFactor, timeScaleFactor)
 
 # calculate percent error
 for i in range(0, len(yTest)):
-    percentError.append(abs((yTest[i] - pred[i])/yTest[i]))
+    percentError.append((abs((yTest[i] - pred[i])/yTest[i]) *100))
 
 sumPercentError = sum(percentError)
 averageError = sumPercentError / len(percentError)

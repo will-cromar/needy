@@ -44,7 +44,7 @@ def normalize(xTrain, yTrain, xTest, yTest):
 
     return xTrain, yTrain, xTest, yTest, maxPrice, lastTime
 
-def denormalize(xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor):
+def denormalize(xTrain, yTrain, xTest, yTest, pred, pred2, priceScaleFactor, timeScaleFactor):
 
     for i in range(0, len(xTrain)):
         xTrain[i] = (xTrain[i]*timeScaleFactor)
@@ -59,4 +59,10 @@ def denormalize(xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor)
     for i in range(0, len(yTest)):
         yTest[i] = (yTest[i]*priceScaleFactor)
 
-    return xTrain, yTrain, xTest, yTest
+    for i in range(0, len(pred)):
+        pred[i] = (pred[i]*priceScaleFactor)
+
+    for i in range(0, len(pred2)):
+        pred2[i] = (pred2[i]*priceScaleFactor)
+
+    return xTrain, yTrain, xTest, yTest, pred, pred2
