@@ -1,5 +1,5 @@
 from sklearn.tree import tree
-from ProofOfConcept.fetch import getNews
+from ProofOfConcept.fetch import getNews, summarize
 from ProofOfConcept.graph_test_func import graphNN
 from news import overallSentiment
 from price_parsing import getStockPrices, preprocessStocks
@@ -10,6 +10,9 @@ __author__ = 'tylervanharen'
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import requests
+import nltk
+
+nltk.data.path.append("/home/will/build/nltk_data")
 
 def hello(c):
     c.drawString(100,100,'Hello World');
@@ -36,13 +39,18 @@ def genReport(company):
     # regressions = runRegressions(regs, times, prices);
     # graphRegressionsOverTime(company, dataset, *regressions);
 
-    graphNN(company, '11/24/15', 100)
+    graphNN(company, '11/24/15', 2)
     report.drawImage(company+".png",width/8,30*height/80,height=300,width=400);
     report.setFont("Helvetica",25)
     report.drawCentredString(width/4,height/4,"In The News:");
-    positivity = overallSentiment(getNews(getCompanyName(company)),verbose=True);
+    positivity = overallSentiment(getNews(getCompanyName(company),12),verbose=True);
+    urls = getNews(getCompanyName(company),12);
+
     report.setFillColorRGB(255*(1-positivity),255*positivity,0);
     report.drawCentredString(6*width/10,height/4,str(100*positivity)+"% Positive");
+    report.setFillColorRGB(0,0,0);
+    report.setFont("Helvetica",12);
+    report.drawCentredString(width/10,height/5,summarize(urls[0]))
     report.showPage();
     report.save();
 
