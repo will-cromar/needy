@@ -5,9 +5,10 @@ from news import overallSentiment
 from sentiment_analysis import guessSentiment
 
 
-def getNews(company,runs):
+def getNews(company,num):
     urls= []
-    for i in range(0,runs/4):
+    num = 16
+    for i in range(0,num/4):
         url = ('https://ajax.googleapis.com/ajax/services/search/news?' +
        'v=1.0&q='+validizeCompany(company)+'&userip=INSERT-USER-IP&start='+str(i*4))
         request = urllib2.Request(url, None)
@@ -16,8 +17,8 @@ def getNews(company,runs):
         # Process the JSON string.
         results = simplejson.load(response)
 
-        for i in results['responseData']['results']:
-            urls.append(i['unescapedUrl'])
+        for j in results['responseData']['results']:
+            urls.append(j['unescapedUrl'])
     return urls
 
 def summarize(url):
