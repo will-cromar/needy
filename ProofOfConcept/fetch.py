@@ -7,7 +7,6 @@ from sentiment_analysis import guessSentiment
 
 def getNews(company,num):
     urls= []
-    num = 16
     for i in range(0,num/4):
         url = ('https://ajax.googleapis.com/ajax/services/search/news?' +
        'v=1.0&q='+validizeCompany(company)+'&userip=INSERT-USER-IP&start='+str(i*4))

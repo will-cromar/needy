@@ -39,24 +39,24 @@ def genReport(company):
     # regressions = runRegressions(regs, times, prices);
     # graphRegressionsOverTime(company, dataset, *regressions);
     print("Creating report on "+company);
-    graphNN(company,'11/24/15',25)
-    report.drawImage(company+".png",width/8,30*height/80,height=300,width=400);
+    graphNN(company,'11/24/15',2000)
+    report.drawImage(company+".png",1.75*width/10,35*height/80,height=310,width=400);
     report.setFont("Helvetica",25)
-    report.drawCentredString(width/4,height/4,"In The News:");
+    report.drawCentredString(3*width/10,height/3+50,"In The News:");
     newsUrls = getNews(getCompanyName(company),4)
     positivity = overallSentiment(newsUrls,verbose=True);
 
-    report.setFillColorRGB(255*(1-positivity),255*positivity,0);
-    report.drawCentredString(6*width/10,height/4,str(100*positivity)+"% Positive");
-    report.setFillColorRGB(0,0,0);
+    #report.setFillColorRGB(255*(1-positivity),255*positivity,0);
+    report.drawCentredString(6*width/10,height/3+50,str(100*positivity)+"% Positive");
+    #report.setFillColorRGB(0,0,0);
     report.setFont("Helvetica",8);
     styleSheet = getSampleStyleSheet();
     body = styleSheet['BodyText'];
     body.fontSize = 8;
     for i in range(0,3):
         P = Paragraph(summarize(newsUrls[i]),body);
-        w,h = P.wrap(width/4,height/10);
-        P.drawOn(report,i*width/4+20,height/4-h);
+        w,h = P.wrap(width/3.5,height/10);
+        P.drawOn(report,i*width/3+20,height/3-h+20);
     #report.drawCentredString(4*width/10,height/5,summarize(newsUrls[1]));
     report.showPage();
     report.save();
