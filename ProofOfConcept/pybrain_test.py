@@ -7,7 +7,7 @@ from pybrain.structure.modules import TanhLayer, LinearLayer
 from pybrain.structure import RecurrentNetwork, LinearLayer, FullConnection, SigmoidLayer
 
 import time
-top = 100
+top = 1000
 features = []
 for i in range(0, top):
     features.append(i)
@@ -30,7 +30,7 @@ for i in range(0, top):
 # net = buildNetwork(1, 3, 1, bias=True, hiddenclass=TanhLayer)
 
 # rnn = RecurrentNetwork()
-rnn = buildNetwork(1, 25, 1, bias=True, recurrent=True, hiddenclass=SigmoidLayer)
+rnn = buildNetwork(1, 25, 1, bias=True, recurrent=False, hiddenclass=TanhLayer)
 # rnn.addInputModule(LinearLayer(1, 'in'));
 # rnn.addModule(SigmoidLayer(25,'hidden'));
 # rnn.addOutputModule(LinearLayer(1,'out'));
@@ -38,9 +38,9 @@ rnn = buildNetwork(1, 25, 1, bias=True, recurrent=True, hiddenclass=SigmoidLayer
 # rnn.addConnection(FullConnection(rnn['hidden'],rnn['out'],'give'));
 # rnn.addRecurrentConnection(FullConnection(rnn['hidden'],rnn['hidden'],'hide'));
 # rnn.sortModules();
-trainer = BackpropTrainer(rnn, ds, learningrate=0.00005)
+trainer = BackpropTrainer(rnn, ds, learningrate=0.000005)
 
-runs = 100
+runs = 500
 for i in range(1,runs):
     print ((i/(runs*1.0)) *100)
     print trainer.train()
