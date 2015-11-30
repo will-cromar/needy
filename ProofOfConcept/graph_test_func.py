@@ -28,9 +28,8 @@ def graphNN(ticker, date, runs):
     xTrain, yTrain = preprocessStocks(trainData)
     xTest, yTest = preprocessStocks(testData)
 
-    # xTrain, yTrain = preprocessStocks(data)
-    # xTest = xTrain
-    # yTest = yTrain
+    del xTrain[len(xTrain) - 1]
+    del yTrain[len(yTrain) - 1]
 
     xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor = normalize(xTrain, yTrain, xTest, yTest)
 
@@ -71,13 +70,14 @@ def graphNN(ticker, date, runs):
     print 'training network 100.0% complete.'
     print 'predicting...'
     # make predictions with network
-    #rnn.reset()
-    for i in xTest:
-        pred.append(rnn.activate(i))
-
     pred2 = []
     for i in xTrain:
         pred2.append(rnn.activate(i))
+
+    for i in xTest:
+        pred.append(rnn.activate(i))
+
+
 
     print 'predictions complete.'
     print 'generating graphs...'
@@ -92,32 +92,33 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    plt.subplot(4, 1,1)
-    plt.plot(EpochNumber, ErrorValues, 'bo')
-    plt.xlabel('Epoch Number')
-    plt.ylabel('Error Value')
+    #plt.xkcd()
+    # plt.subplot(4, 1,1)
+    # plt.plot(EpochNumber, ErrorValues, 'bo')
+    # plt.xlabel('Epoch Number')
+    # plt.ylabel('Error Value')
 
-    plt.subplot(4, 1, 2)
+    plt.subplot(3, 1, 1)
     plt.plot(xTest, yTest, 'ro')
     plt.plot(xTest, pred, 'go')
     plt.xlabel('xTest')
     plt.ylabel('yTest')
 
-    plt.subplot(4, 1, 3)
+    plt.subplot(3, 1, 2)
     plt.plot(xTrain, yTrain, 'ro')
     plt.plot(xTrain, pred2, 'go')
     plt.xlabel('xTrain')
     plt.ylabel('yTrain')
 
-    plt.subplot(4, 1, 4)
+    plt.subplot(3, 1, 3)
     # plt.text(0.02, 0.85, 'Hello', fontsize=12)
     plt.text(0.02, 0.70, 'Number of Epochs  = ' + str(runs), fontsize=12)
     plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(xTrain)), fontsize=12)
     plt.text(0.02, 0.40, 'Time per Epoch = ' + str(timePerEpoch) + 's   Total Time = ' + str(totalTime) + 's', fontsize=12)
-    plt.text(0.02, 0.25, 'Average Absolute Percent Error Value = ' + str(averageError), fontsize=12)
-    plt.text(0.02, 0.10, 'Minimum Error Value = ' + str(min(percentError)), fontsize=12)
+    plt.text(0.02, 0.25, 'Average Percent Error Value = ' + str(averageError), fontsize=12)
+    plt.text(0.02, 0.10, 'Minimum Percent Error Value = ' + str(min(percentError)), fontsize=12)
 
-
+    #plt.show()
     plt.savefig(ticker+'.png')
     print 'graphs complete.'
 

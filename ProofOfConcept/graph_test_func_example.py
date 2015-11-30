@@ -1,9 +1,9 @@
 # Luke
 from graph_test_func import graphNN
 
-ticker = "AAPL"
+ticker = "GOOG"
 date = '11/24/15'
 
-graphNN(ticker, date, 5)
+graphNN(ticker, date, 250)
 
 # change
