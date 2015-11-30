@@ -1,5 +1,5 @@
 # needy
 
-Hello, world!
+Racist robot stock investor
 
-Someone will write this later
+Don't use this for actual investments

@@ -115,7 +115,7 @@ def graphNN(ticker, date, runs):
     plt.text(0.02, 0.10, 'Minimum Error Value = ' + str(min(percentError)), fontsize=12)
 
 
-    plt.savefig('fig1.png')
+    plt.savefig(ticker+'.png')
 
     return
 

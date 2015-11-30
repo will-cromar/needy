@@ -1,6 +1,6 @@
-from scrapy.commands import crawl
 from sklearn.tree import tree
 from ProofOfConcept.fetch import getNews
+from ProofOfConcept.graph_test_func import graphNN
 from news import overallSentiment
 from price_parsing import getStockPrices, preprocessStocks
 from regression_graphs import graphRegressionsOverTime
@@ -24,19 +24,20 @@ def genReport(company):
     report.line(width/32,43*height/50,31*width/32,43*height/50);
     report.line(width/16,42*height/50,15*width/16,42*height/50);
 
-    data = getStockPrices(company, frequency="daily");
-    times, prices = preprocessStocks(data);
-    dataset = Dataset(times, prices, company, graphColor="k", mode="sklearn");
+    # data = getStockPrices(company, frequency="daily");
+    # times, prices = preprocessStocks(data);
+    # dataset = Dataset(times, prices, company, graphColor="k", mode="sklearn");
+    #
+    # min_samples = len(times) * .025;
+    #
+    # regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r")];
+    #         #("Ouija board", svm.SVR(kernel="poly"), "g")]
+    #
+    # regressions = runRegressions(regs, times, prices);
+    # graphRegressionsOverTime(company, dataset, *regressions);
 
-    min_samples = len(times) * .025;
-
-    regs = [("Decision tree", tree.DecisionTreeRegressor(min_samples_leaf=min_samples), "r")];
-            #("Ouija board", svm.SVR(kernel="poly"), "g")]
-
-    regressions = runRegressions(regs, times, prices);
-    graphRegressionsOverTime(company, dataset, *regressions);
-
-    report.drawImage(company+".png",width/8,45*height/80,height=200,width=200);
+    graphNN(company, '11/30/15', 100)
+    report.drawImage(company+".png",width/8,30*height/80,height=300,width=400);
     report.setFont("Helvetica",25)
     report.drawCentredString(width/4,height/4,"In The News:");
     positivity = overallSentiment(getNews(getCompanyName(company)),verbose=True);
@@ -54,5 +55,5 @@ def getCompanyName(ticker):
 
 dji = ["MMM","AXP","AAPL","BA","CAT","CVX","CSCO","KK","DD","XM","GE"]
 
-for i in ['DO']:
+for i in ['GOOG']:
     genReport(i);
