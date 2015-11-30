@@ -16,6 +16,7 @@ from util import *
 
 def graphNN(ticker, date, runs):
 
+    print 'building dataset...'
     xTrain = []
     yTrain = []
     xTest = []
@@ -41,18 +42,21 @@ def graphNN(ticker, date, runs):
 
     # number of runs
     #runs = 5
-
+    print 'complete.'
+    print 'buidling netowrk...'
     rnn = buildNetwork(1, 3, 3, 3, 3, 3, 3, 3, 3, 1, bias=True, recurrent=True, hiddenclass=TanhLayer)
     trainer = BackpropTrainer(rnn, ds, learningrate=0.01)
 
+    print 'complete'
     EpochNumber = []
     epochTimes = []
     ErrorValues = []
     percentError = []
 
+    print 'training network...'
     totalTimeStart = time.time()
     for i in range(1,runs):
-        print ((i/(runs*1.0)) *100)
+        print (str((i/(runs*1.0)) *100) + '% complete')
         startEpochTime = time.time()
         EpochNumber.append(i)
         ErrorValues.append(trainer.train())
@@ -64,6 +68,8 @@ def graphNN(ticker, date, runs):
 
     timePerEpoch = sum(epochTimes)/len(epochTimes)
 
+    print 'training network 100.0% complete.'
+    print 'predicting...'
     # make predictions with network
     #rnn.reset()
     for i in xTest:
@@ -73,6 +79,8 @@ def graphNN(ticker, date, runs):
     for i in xTrain:
         pred2.append(rnn.activate(i))
 
+    print 'predictions complete.'
+    print 'generating graphs...'
     # denormalize
     xTrain, yTrain, xTest, yTest, pred, pred2 = denormalize(xTrain, yTrain, xTest, yTest, pred, pred2, priceScaleFactor, timeScaleFactor)
 
@@ -111,6 +119,7 @@ def graphNN(ticker, date, runs):
 
 
     plt.savefig(ticker+'.png')
+    print 'graphs complete.'
 
     return
 
