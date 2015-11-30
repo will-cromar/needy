@@ -36,7 +36,7 @@ def genReport(company):
     # regressions = runRegressions(regs, times, prices);
     # graphRegressionsOverTime(company, dataset, *regressions);
 
-    graphNN(company, '11/30/15', 100)
+    graphNN(company, '11/24/15', 100)
     report.drawImage(company+".png",width/8,30*height/80,height=300,width=400);
     report.setFont("Helvetica",25)
     report.drawCentredString(width/4,height/4,"In The News:");
@@ -55,5 +55,5 @@ def getCompanyName(ticker):
 
 dji = ["MMM","AXP","AAPL","BA","CAT","CVX","CSCO","KK","DD","XM","GE"]
 
-for i in ['GOOG']:
+for i in ['AAPL']:
     genReport(i);

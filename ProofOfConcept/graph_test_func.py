@@ -22,7 +22,7 @@ def graphNN(ticker, date, runs):
     yTest = []
     pred = []
 
-    data = getStockPrices(ticker, frequency="daily")
+    data = getStockPrices(ticker, frequency="daily", update=True)
     trainData, testData = splitByDate(data, date)
     xTrain, yTrain = preprocessStocks(trainData)
     xTest, yTest = preprocessStocks(testData)
