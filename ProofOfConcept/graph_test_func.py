@@ -32,12 +32,7 @@ def graphNN(ticker, date, runs):
     # yTest = yTrain
 
     xTrain, yTrain, xTest, yTest, priceScaleFactor, timeScaleFactor = normalize(xTrain, yTrain, xTest, yTest)
-    print xTrain
-    print yTrain
-    print xTest
-    print yTest
-    print priceScaleFactor
-    print timeScaleFactor
+
 
     # build data set from x training data and y training data
     ds = SupervisedDataSet(1,1)
