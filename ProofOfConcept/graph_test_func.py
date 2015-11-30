@@ -92,21 +92,21 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    #plt.xkcd()
+    plt.xkcd()
     # plt.subplot(4, 1,1)
     # plt.plot(EpochNumber, ErrorValues, 'bo')
     # plt.xlabel('Epoch Number')
     # plt.ylabel('Error Value')
 
     plt.subplot(3, 1, 1)
-    plt.plot(xTest, yTest, 'ro')
-    plt.plot(xTest, pred, 'go')
+    plt.plot(xTest, yTest, 'w-')
+    plt.plot(xTest, pred, 'w--')
     plt.xlabel('xTest')
     plt.ylabel('yTest')
 
     plt.subplot(3, 1, 2)
-    plt.plot(xTrain, yTrain, 'ro')
-    plt.plot(xTrain, pred2, 'go')
+    plt.plot(xTrain, yTrain, 'w-')
+    plt.plot(xTrain, pred2, 'w--')
     plt.xlabel('xTrain')
     plt.ylabel('yTrain')
 
@@ -119,7 +119,7 @@ def graphNN(ticker, date, runs):
     plt.text(0.02, 0.10, 'Minimum Percent Error Value = ' + str(min(percentError)), fontsize=12)
 
     #plt.show()
-    plt.savefig(ticker+'.png')
+    plt.savefig(ticker+'.png', transparent=True)
     print 'graphs complete.'
 
     return
