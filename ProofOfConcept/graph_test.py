@@ -17,13 +17,11 @@ xTest = []
 yTest = []
 pred = []
 
-data = getStockPrices("AXP", frequency="daily")
-trainData, testData = splitByDate(data, '9/21/2015')
+data = getStockPrices("GOOG", frequency="daily")
+trainData, testData = splitByDate(data, '11/24/2015')
 xTrain, yTrain = preprocessStocks(trainData)
 xTest, yTest = preprocessStocks(testData)
 
-del xTest[0]
-del yTest[0]
 # xTrain, yTrain = preprocessStocks(data)
 # xTest = xTrain
 # yTest = yTrain
@@ -42,30 +40,10 @@ for i in range(0, len(xTrain)):
    ds.appendLinked(xTrain[i], yTrain[i])
 
 # number of runs
-runs = 5000
+runs = 5
 
-# # top of range of numbers to generate
-# top = 100
-#
-# # generate x training data
-# for i in range(0, top):
-#     xTrain.append(i)
-#
-# # generate y training data
-# for i in range(0, top):
-#     yTrain.append((i/2.0))
-#
-# # generate x testing data
-# for i in range(0, top, 0.5):
-#     xTest.append(i)
-#
-# # generate y testing data
-# for i in range(0, top, 0.5):
-#     yTest.append(i/2.0)
-
-
-rnn = buildNetwork(1, 10, 10, 10, 10, 10, 1, bias=True, recurrent=True, hiddenclass=TanhLayer)
-trainer = BackpropTrainer(rnn, ds, learningrate=0.1)
+rnn = buildNetwork(1, 3, 3, 3, 3, 3, 3, 3, 3, 1, bias=True, recurrent=True, hiddenclass=TanhLayer)
+trainer = BackpropTrainer(rnn, ds, learningrate=0.01)
 
 EpochNumber = []
 epochTimes = []
@@ -87,6 +65,7 @@ totalTime = (totalTimeEnd - totalTimeStart)
 timePerEpoch = sum(epochTimes)/len(epochTimes)
 
 # make predictions with network
+#rnn.reset()
 for i in xTest:
     pred.append(rnn.activate(i))
 
