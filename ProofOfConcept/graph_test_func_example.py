@@ -5,3 +5,5 @@ ticker = "GOOG"
 date = '11/24/15'
 
 graphNN(ticker, date, 7)
+
+# change
