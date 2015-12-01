@@ -16,8 +16,12 @@ def getStockPrices(ticker, frequency="monthly", update=False):
     prices = None
     # If there is no cached version of the pickle, or update flag is on, download price data and cache it
     if update or not util.pickleExists(name):
-        prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, authtoken="xx_T2u2fsQ_MjyZjTb6E")
-        util.savePickle(prices, name)
+        try:
+            prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, authtoken="xx_T2u2fsQ_MjyZjTb6E")
+            util.savePickle(prices, name)
+        # Catch various connection errors
+        except:
+            return -1
     # Otherwise, use most recent cache entry
     else:
         prices = util.getMostRecentPickle(name)
