@@ -44,15 +44,11 @@ def recentTrendTest():
 
     data = getStockPrices("GOOG", frequency="daily")
     dates, prices = preprocessStocks(data[-lookback:])
-    dataset = Dataset(dates, prices, "The GOOG", graphColor="k", mode="sklearn")
-    recentTrend = graphRecentTrend(dates, prices, samples)
-    recentTrend.graphColor = "b"
+    dataset = Dataset(dates, prices, mode="preformatted")
+    recentTrend = graphRecentTrend(dataset, samples)
 
-    graphRegressionsOverTime(dataset, recentTrend, title="Test of recent trends")
+    graphRegressionsOverTime("GOOG", dataset, recentTrend, title="Test of recent trends")
 
 getStockPrices("GOOGL", update=True, frequency="daily")
 getStockPrices("AAPL", update=True, frequency="daily")
-test()
 recentTrendTest()
-getStockPrices("GOOGL", update=True, frequency="daily")
-getStockPrices("AAPL", update=True, frequency="daily")

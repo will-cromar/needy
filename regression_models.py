@@ -5,7 +5,7 @@ class Dataset:
     """
     Represent a dataset graphable by regression_graphs module
     """
-    def __init__(self, dates, prices, label, graphColor="k", mode="sklearn"):
+    def __init__(self, dates, prices, mode="preformatted"):
         # Extract data from sklearn format
         if mode == "sklearn":
             self.dates = [date[0] for date in dates] # Exctract date from one-element list
@@ -14,18 +14,6 @@ class Dataset:
         elif mode == "preformatted":
             self.dates = dates
             self.prices = prices
-
-        # Set graph kwargs
-        self.label = label
-        self.graphColor = graphColor
-
-    def dumpData(self):
-        """
-        Dumps all data from the class in the following order for convenience
-        :return: tuple of (ordinal dates, float prices, label to go in legend, color of the
-         graphed points)
-        """
-        return self.dates, self.prices, self.label, self.graphColor
 
     def getXY(self, mode="sklearn"):
         """
@@ -81,7 +69,7 @@ def extendGraphByN(X, n):
     extension = map(lambda i: [i], range(end + 1, end + n))
     return X + extension
 
-def graphRecentTrend(X, y, samples):
+def graphRecentTrend(dataset, samples):
     """
     Creates a linear regression across recent datapoints
     :param X: The domain to feed into regression model (sklearn format)
@@ -91,6 +79,7 @@ def graphRecentTrend(X, y, samples):
     """
 
     # Get sample recent points
+    X, y = dataset.getXY()
     X = X[-samples:]
     y = y[-samples:]
 
@@ -102,4 +91,4 @@ def graphRecentTrend(X, y, samples):
     domain = extendGraphByN(X, samples)
     pred = reg.predict(domain)
 
-    return Dataset(domain, pred, "Recent trend")
+    return Dataset(domain, pred)
