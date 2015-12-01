@@ -10,6 +10,7 @@ from price_parsing import *
 from util import *
 import matplotlib
 import matplotlib.font_manager as font_manager
+from xkcd import xkcdify
 
 def graphNN(ticker, date, runs):
 
@@ -110,14 +111,7 @@ def graphNN(ticker, date, runs):
     leg = plt.legend([l1, l2], ['Actual Values', 'Predictions'], framealpha=0, loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
     for text in leg.get_texts():
         text.set_color('#91A2C4')
-
-    ax.spines['bottom'].set_color('#91A2C4')
-    ax.spines['top'].set_color('#91A2C4')
-    ax.spines['left'].set_color('#91A2C4')
-    ax.spines['right'].set_color('#91A2C4')
-    ax.tick_params(axis='both', colors='#91A2C4')
-    ax.xaxis.label.set_color('#91A2C4')
-    ax.yaxis.label.set_color('#91A2C4')
+    xkcdify(plt)
 
 
     plt.subplot(2, 1, 2)
@@ -126,14 +120,7 @@ def graphNN(ticker, date, runs):
     plt.plot(xTrain, pred2, 'w--')
     plt.xlabel('Time (days)')
     plt.ylabel('Price (USD)')
-    ax = plt.gca()
-    ax.spines['bottom'].set_color('#91A2C4')
-    ax.spines['top'].set_color('#91A2C4')
-    ax.spines['left'].set_color('#91A2C4')
-    ax.spines['right'].set_color('#91A2C4')
-    ax.tick_params(axis='both', colors='#91A2C4')
-    ax.xaxis.label.set_color('#91A2C4')
-    ax.yaxis.label.set_color('#91A2C4')
+    xkcdify(plt)
 
     numEpochs = runs
     numDataPoints = len(xTrain) + len(xTest)
