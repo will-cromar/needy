@@ -79,7 +79,7 @@ def graphNN(ticker, date, runs):
         pred.append(rnn.activate(i))
 
     # predict tomorrow's price
-    tPrice = rnn.activate(max(xTest) + 1) * priceScaleFactor
+    tPrice = rnn.activate(xTest[len(xTest) - 1] + 1) * priceScaleFactor
 
     print 'predictions complete.'
     print 'generating graphs...'
