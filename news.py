@@ -14,14 +14,18 @@ def overallSentiment(urls, verbose=False):
     sentiments = []
 
     for url in urls:
-        if verbose: print "Downloading", url + "..."
-        response = requests.get(url)
-        paragraphs = justext.justext(response.content, justext.get_stoplist("English"))
-        allText = "\n".join([paragraph.text for paragraph in paragraphs])
-        if verbose: print "Reading..."
-        sentiment = guessSentiment(allText)
-        if verbose: print "Verdict:", sentiment
-        sentiments.append(sentiment)
+        try:
+            if verbose: print "Downloading", url + "..."
+            response = requests.get(url)
+            paragraphs = justext.justext(response.content, justext.get_stoplist("English"))
+            allText = "\n".join([paragraph.text for paragraph in paragraphs])
+            if verbose: print "Reading..."
+            sentiment = guessSentiment(allText)
+            if verbose: print "Verdict:", sentiment
+            sentiments.append(sentiment)
+        except:
+            if verbose: print "Failed to download", url
+
 
     positiveCount = len(filter(lambda x: x == "Positive", sentiments))
     return float(positiveCount) / len(urls)
