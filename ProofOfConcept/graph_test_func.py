@@ -1,18 +1,13 @@
 # Luke
-from pybrain.datasets import SupervisedDataSet, SequentialDataSet
+from pybrain.datasets import SupervisedDataSet
 from pybrain.tools.shortcuts import buildNetwork
-from pybrain.supervised.trainers import BackpropTrainer, Trainer
-from pybrain.structure.modules import TanhLayer, LinearLayer, MdrnnLayer, LSTMLayer, GaussianLayer, SoftmaxLayer
+from pybrain.supervised.trainers import BackpropTrainer
+from pybrain.structure.modules import TanhLayer
 import matplotlib.pyplot as plt
-import time
 from normalizer import normalize
 from normalizer import denormalize
 from price_parsing import *
 from util import *
-
-
-# ticker = "GOOG"
-# date = '11/24/15'
 
 def graphNN(ticker, date, runs):
 
@@ -69,6 +64,10 @@ def graphNN(ticker, date, runs):
 
     print 'training network 100.0% complete.'
     print 'predicting...'
+    # prime the network
+    for i in xTrain:
+        rnn.activate(i)
+
     # make predictions with network
     pred2 = []
     for i in xTrain:
@@ -92,18 +91,25 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    #plt.xkcd()
+    plt.xkcd()
     # plt.subplot(4, 1,1)
     # plt.plot(EpochNumber, ErrorValues, 'bo')
     # plt.xlabel('Epoch Number')
     # plt.ylabel('Error Value')
 
-    plt.subplot(3, 1, 1)
-    plt.plot(xTest, yTest, 'w-')
-    plt.plot(xTest, pred, 'w--')
-    plt.xlabel('xTest')
-    plt.ylabel('yTest')
+    bx = plt.subplot(3, 1, 1)
+    plt.tight_layout()
+    l1, = plt.plot(xTest, yTest, 'w-', label='line1')
+    l2, = plt.plot(xTest, pred, 'w--', label='line2')
+    plt.xlabel('Time (days)')
+    plt.ylabel('Price (USD)')
     ax = plt.gca()
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    leg = plt.legend([l1, l2], ['Actual Values', 'Predictions'], framealpha=0, loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
+    for text in leg.get_texts():
+        text.set_color('#91A2C4')
+
     ax.spines['bottom'].set_color('#91A2C4')
     ax.spines['top'].set_color('#91A2C4')
     ax.spines['left'].set_color('#91A2C4')
@@ -114,10 +120,11 @@ def graphNN(ticker, date, runs):
 
 
     plt.subplot(3, 1, 2)
+    plt.tight_layout()
     plt.plot(xTrain, yTrain, 'w-')
     plt.plot(xTrain, pred2, 'w--')
-    plt.xlabel('xTrain')
-    plt.ylabel('yTrain')
+    plt.xlabel('Time (days)')
+    plt.ylabel('Price (USD)')
     ax = plt.gca()
     ax.spines['bottom'].set_color('#91A2C4')
     ax.spines['top'].set_color('#91A2C4')
@@ -128,7 +135,9 @@ def graphNN(ticker, date, runs):
     ax.yaxis.label.set_color('#91A2C4')
 
 
+
     plt.subplot(3, 1, 3)
+    plt.tight_layout()
     # plt.text(0.02, 0.85, 'Hello', fontsize=12)
     plt.text(0.02, 0.70, 'Number of Epochs  = ' + str(runs), fontsize=12, color='#91A2C4')
     plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(xTrain)), fontsize=12, color='#91A2C4')
@@ -146,7 +155,7 @@ def graphNN(ticker, date, runs):
 
 
     #plt.show()
-    plt.savefig(ticker+'.png', transparent=True)
+    plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight')
     print 'graphs complete.'
 
     return
