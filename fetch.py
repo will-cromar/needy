@@ -8,16 +8,19 @@ from sentiment_analysis import guessSentiment
 def getNews(company,num):
     urls= []
     for i in range(0,num/4):
-        url = ('https://ajax.googleapis.com/ajax/services/search/news?' +
-       'v=1.0&q='+validizeCompany(company)+'&userip=INSERT-USER-IP&start='+str(i*4))
-        request = urllib2.Request(url, None)
-        response = urllib2.urlopen(request)
+        try:
+            url = ('https://ajax.googleapis.com/ajax/services/search/news?' +
+            'v=1.0&q='+validizeCompany(company)+'&userip=INSERT-USER-IP&start='+str(i*4))
+            request = urllib2.Request(url, None)
+            response = urllib2.urlopen(request)
 
-        # Process the JSON string.
-        results = simplejson.load(response)
+            # Process the JSON string.
+            results = simplejson.load(response)
 
-        for j in results['responseData']['results']:
-            urls.append(j['unescapedUrl'])
+            for j in results['responseData']['results']:
+                urls.append(j['unescapedUrl'])
+        except:
+            print "Failed to load results from page ",(i+1)
     return urls
 
 def summarize(url):
