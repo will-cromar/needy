@@ -135,6 +135,12 @@ def graphNN(ticker, date, runs):
     ax.xaxis.label.set_color('#91A2C4')
     ax.yaxis.label.set_color('#91A2C4')
 
+    numEpochs = runs
+    numDataPoints = len(xTrain) + len(xTest)
+    #timePerEpoch
+    #totalTime
+    #averageError
+    minPercentError = min(percentError)
 
 
     # plt.subplot(3, 1, 3)
@@ -159,5 +165,5 @@ def graphNN(ticker, date, runs):
     plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight', dpi=600)
     print 'graphs complete.'
 
-    return tPrice
+    return tPrice, numEpochs, numDataPoints, totalTime, averageError, minPercentError
 
