@@ -92,7 +92,7 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    plt.xkcd()
+    #plt.xkcd()
     # plt.subplot(4, 1,1)
     # plt.plot(EpochNumber, ErrorValues, 'bo')
     # plt.xlabel('Epoch Number')
