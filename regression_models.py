@@ -33,6 +33,7 @@ class Dataset:
         :param mode: string representing format mode
         :return: tuple representing (X, y)
         """
+        # Wrap each date in a list
         if mode == "sklearn":
             return [[date] for date in self.dates], self.prices
 
