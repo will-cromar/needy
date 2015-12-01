@@ -10,7 +10,8 @@ def getStockPrices(ticker, frequency="monthly", update=False):
     :param ticker: Name of the company's ticker
     :param frequency: Frequency of returned time series. See Quandl.get()'s collapse param.
     :param update: Always updates instead of using cache if true
-    :return: Pandas dataframe representing time series of ticker's closing prices
+    :return: Pandas dataframe representing time series of ticker's closing prices, -1 for
+        connection errors
     """
     name = ticker + "_" + frequency # Name of data in cache
     prices = None
