@@ -79,7 +79,7 @@ def graphNN(ticker, date, runs):
         pred.append(rnn.activate(i))
 
     # predict tomorrow's price
-    tPrice = rnn.activate(xTest[len(xTest) - 1] + 1) * priceScaleFactor
+    tomorrowPrice = rnn.activate(xTest[len(xTest) - 1] + 1) * priceScaleFactor
 
     print 'predictions complete.'
     print 'generating graphs...'
@@ -165,5 +165,5 @@ def graphNN(ticker, date, runs):
     plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight', dpi=600)
     print 'graphs complete.'
 
-    return tPrice, numEpochs, numDataPoints, totalTime, averageError, minPercentError
+    return tomorrowPrice, numEpochs, numDataPoints, totalTime, averageError, minPercentError
 
