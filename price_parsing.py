@@ -10,14 +10,19 @@ def getStockPrices(ticker, frequency="monthly", update=False):
     :param ticker: Name of the company's ticker
     :param frequency: Frequency of returned time series. See Quandl.get()'s collapse param.
     :param update: Always updates instead of using cache if true
-    :return: Pandas dataframe representing time series of ticker's closing prices
+    :return: Pandas dataframe representing time series of ticker's closing prices, -1 for
+        connection errors
     """
     name = ticker + "_" + frequency # Name of data in cache
     prices = None
     # If there is no cached version of the pickle, or update flag is on, download price data and cache it
     if update or not util.pickleExists(name):
-        prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, authtoken="xx_T2u2fsQ_MjyZjTb6E")
-        util.savePickle(prices, name)
+        try:
+            prices = Quandl.get(STOCK_DATA_SOURCE + ticker, collapse=frequency, authtoken="xx_T2u2fsQ_MjyZjTb6E")
+            util.savePickle(prices, name)
+        # Catch various connection errors
+        except:
+            return -1
     # Otherwise, use most recent cache entry
     else:
         prices = util.getMostRecentPickle(name)
