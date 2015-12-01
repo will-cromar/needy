@@ -8,6 +8,8 @@ from normalizer import normalize
 from normalizer import denormalize
 from price_parsing import *
 from util import *
+import matplotlib
+import matplotlib.font_manager as font_manager
 
 def graphNN(ticker, date, runs):
 
@@ -91,11 +93,16 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    plt.xkcd()
+    #plt.xkcd()
     # plt.subplot(4, 1,1)
     # plt.plot(EpochNumber, ErrorValues, 'bo')
     # plt.xlabel('Epoch Number')
     # plt.ylabel('Error Value')
+
+    prop = font_manager.FontProperties(fname='Humor-Sans-1.0.ttf')
+    prop.set_weight = 'light'
+    matplotlib.rcParams['font.family'] = prop.get_name()
+    matplotlib.rcParams['font.weight'] = 'light'
 
     bx = plt.subplot(3, 1, 1)
     plt.tight_layout()
@@ -155,7 +162,7 @@ def graphNN(ticker, date, runs):
 
 
     #plt.show()
-    plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight')
+    plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight', dpi=600)
     print 'graphs complete.'
 
     return
