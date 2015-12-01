@@ -12,8 +12,9 @@ def graphRegressionsOverTime(ticker, ground_truth, *regression_plots, **kwargs):
     :param kwargs: Keyword arguments to use with matplotlib
     :return: None
     """
-    # Initialize the plot
+    # Initialize the plot as XKCD
     pyplot.figure()
+    pyplot.xkcd()
 
     # Unpack the data from ground_truth
     dates = map(lambda date: datetime.fromordinal(date), ground_truth.dates) # Convert dates from ordinal form
