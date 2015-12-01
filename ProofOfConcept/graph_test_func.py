@@ -98,7 +98,7 @@ def graphNN(ticker, date, runs):
     prop = font_manager.FontProperties(fname='Humor-Sans-1.0.ttf')
     matplotlib.rcParams['font.family'] = prop.get_name()
 
-    plt.subplot(3, 1, 1)
+    plt.subplot(2, 1, 1)
     plt.tight_layout()
     l1, = plt.plot(xTest, yTest, 'w-', label='line1')
     l2, = plt.plot(xTest, pred, 'w--', label='line2')
@@ -120,7 +120,7 @@ def graphNN(ticker, date, runs):
     ax.yaxis.label.set_color('#91A2C4')
 
 
-    plt.subplot(3, 1, 2)
+    plt.subplot(2, 1, 2)
     plt.tight_layout()
     plt.plot(xTrain, yTrain, 'w-')
     plt.plot(xTrain, pred2, 'w--')
@@ -137,22 +137,22 @@ def graphNN(ticker, date, runs):
 
 
 
-    plt.subplot(3, 1, 3)
-    plt.tight_layout()
-    # plt.text(0.02, 0.85, 'Hello', fontsize=12)
-    plt.text(0.02, 0.70, 'Number of Epochs  = ' + str(runs), fontsize=12, color='#91A2C4')
-    plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(xTrain)), fontsize=12, color='#91A2C4')
-    plt.text(0.02, 0.40, 'Time per Epoch = ' + str(timePerEpoch) + 's   Total Time = ' + str(totalTime) + 's', fontsize=12, color='#91A2C4')
-    plt.text(0.02, 0.25, 'Average Percent Error Value = ' + str(averageError), fontsize=12, color='#91A2C4')
-    plt.text(0.02, 0.10, 'Minimum Percent Error Value = ' + str(min(percentError)), fontsize=12, color='#91A2C4')
-    ax = plt.gca()
-    ax.spines['bottom'].set_color('#91A2C4')
-    ax.spines['top'].set_color('#91A2C4')
-    ax.spines['left'].set_color('#91A2C4')
-    ax.spines['right'].set_color('#91A2C4')
-    ax.tick_params(axis='both', colors='#91A2C4')
-    ax.xaxis.label.set_color('#91A2C4')
-    ax.yaxis.label.set_color('#91A2C4')
+    # plt.subplot(3, 1, 3)
+    # plt.tight_layout()
+    # # plt.text(0.02, 0.85, 'Hello', fontsize=12)
+    # plt.text(0.02, 0.70, 'Number of Epochs  = ' + str(runs), fontsize=12, color='#91A2C4')
+    # plt.text(0.02, 0.55, 'Number of Data Points  = ' + str(len(xTrain)), fontsize=12, color='#91A2C4')
+    # plt.text(0.02, 0.40, 'Time per Epoch = ' + str(timePerEpoch) + 's   Total Time = ' + str(totalTime) + 's', fontsize=12, color='#91A2C4')
+    # plt.text(0.02, 0.25, 'Average Percent Error Value = ' + str(averageError), fontsize=12, color='#91A2C4')
+    # plt.text(0.02, 0.10, 'Minimum Percent Error Value = ' + str(min(percentError)), fontsize=12, color='#91A2C4')
+    # ax = plt.gca()
+    # ax.spines['bottom'].set_color('#91A2C4')
+    # ax.spines['top'].set_color('#91A2C4')
+    # ax.spines['left'].set_color('#91A2C4')
+    # ax.spines['right'].set_color('#91A2C4')
+    # ax.tick_params(axis='both', colors='#91A2C4')
+    # ax.xaxis.label.set_color('#91A2C4')
+    # ax.yaxis.label.set_color('#91A2C4')
 
 
     #plt.show()
