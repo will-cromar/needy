@@ -22,30 +22,35 @@ def hello(c):
 
 def genReport(company):
     report = canvas.Canvas(company+".pdf",pagesize=letter);
-    ttfFile = "DroidSans.ttf";
-    pdfmetrics.registerFont(TTFont("DroidSans", ttfFile)) ;
+    ttfFile = "Humor-Sans-1.0.ttf";
+    pdfmetrics.registerFont(TTFont("HumorSans", ttfFile)) ;
     width,height = letter;
-    report.setFont("DroidSans",30)
+    report.setFillColor(HexColor('#345592'));
+    report.setStrokeColor(HexColor('#91A2C4'));
+    report.rect(0,0,width,height,fill=True);
+    report.setFillColor(HexColor('#91A2C4'));
+    report.setFont("HumorSans",30)
     report.drawCentredString(width/2,725*height/800,getCompanyName(company));
-    report.setFont("DroidSans",17);
+    report.setFont("HumorSans",17);
     report.drawCentredString(width/2,700*height/800,"("+company+")");
     report.line(width/32,43*height/50,31*width/32,43*height/50);
     report.line(width/16,42*height/50,15*width/16,42*height/50);
     print("Creating report on "+company);
-    graphNN(company,'11/24/15',10)
-    report.drawImage(company+".png",1.75*width/10,35*height/80,height=310,width=400);
-    report.setFont("DroidSans",25)
+    graphNN(company,'11/24/15',200)
+    report.drawImage(company+".png",1.75*width/10,35*height/80,height=310,width=400,mask='auto');
+    report.setFont("HumorSans",25)
     report.drawCentredString(3*width/10,height/3+50,"In The News:");
-    newsUrls = getNews(getCompanyName(company),20)
+    newsUrls = getNews(getCompanyName(company),4)
     positivity = overallSentiment(newsUrls,verbose=True);
 
     report.drawCentredString(6*width/10,height/3+50,str(100*positivity)+"% Positive");
 
-    report.setFont("DroidSans",8);
+    report.setFont("HumorSans",8);
     styleSheet = getSampleStyleSheet();
     body = styleSheet['BodyText'];
     body.fontSize = 8;
-    body.fontName = "DroidSans";
+    body.fontName = "HumorSans";
+    body.textColor = HexColor('#91A2C4');
     for i in range(0,3):
         P = Paragraph(summarize(newsUrls[i]),body);
         w,h = P.wrap(width/3.5,height/10);
@@ -63,5 +68,5 @@ def getCompanyName(ticker):
 
 dji = ["MMM","AXP","AAPL","BA","CAT","CVX","CSCO","KK","DD","XM","GE"]
 
-for i in ['GOOG']:
+for i in ['DO']:
     genReport(i);
