@@ -78,7 +78,8 @@ def graphNN(ticker, date, runs):
     for i in xTest:
         pred.append(rnn.activate(i))
 
-
+    # predict tomorrow's price
+    tPrice = rnn.activate(max(xTest) + 1) * priceScaleFactor
 
     print 'predictions complete.'
     print 'generating graphs...'
@@ -93,18 +94,11 @@ def graphNN(ticker, date, runs):
     averageError = sumPercentError / len(percentError)
 
     plt.figure(1)
-    #plt.xkcd()
-    # plt.subplot(4, 1,1)
-    # plt.plot(EpochNumber, ErrorValues, 'bo')
-    # plt.xlabel('Epoch Number')
-    # plt.ylabel('Error Value')
 
     prop = font_manager.FontProperties(fname='Humor-Sans-1.0.ttf')
-    prop.set_weight = 'light'
     matplotlib.rcParams['font.family'] = prop.get_name()
-    matplotlib.rcParams['font.weight'] = 'light'
 
-    bx = plt.subplot(3, 1, 1)
+    plt.subplot(3, 1, 1)
     plt.tight_layout()
     l1, = plt.plot(xTest, yTest, 'w-', label='line1')
     l2, = plt.plot(xTest, pred, 'w--', label='line2')
@@ -165,5 +159,5 @@ def graphNN(ticker, date, runs):
     plt.savefig(ticker + 'NN.png', transparent=True, bbox_extra_artists=(leg,), bbox_inches='tight', dpi=600)
     print 'graphs complete.'
 
-    return
+    return tPrice
 
