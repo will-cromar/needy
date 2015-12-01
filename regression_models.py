@@ -25,39 +25,6 @@ class Dataset:
         if mode == "sklearn":
             return [[date] for date in self.dates], self.prices
 
-def runRegressions(regs, X, y):
-    """
-    Use the regressors in regs to create regressions across dataset
-    :param regs: list of tuples in form (label, model, color argument)
-    :param X: ordinal dates
-    :param y: float prices
-    :return: list of Datasets for each regressor
-    """
-    results = []
-
-    #Create training and testing sets
-    X_train, X_test, y_train, y_test = \
-        train_test_split(X, y, test_size=.33, random_state = 42)
-
-    for entry in regs:
-        # Extract data from tuple
-        name, reg, color = entry
-
-        # Fit and score each regressor
-        print "Running", name
-        reg.fit(X_train, y_train)
-        print "Test score:", reg.score(X_test, y_test)
-        print "Train score:", reg.score(X_train, y_train)
-
-        # Feed data into regessor to draw the line
-        y_pred = reg.predict(X)
-
-        #Create dataset and add to results
-        regression = Dataset(X, y_pred, name, graphColor=color)
-        results.append(regression)
-
-    return results
-
 def extendGraphByN(X, n):
     """
     Extend the domain of X by n
