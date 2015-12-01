@@ -14,7 +14,6 @@ def graphRegressionsOverTime(ticker, ground_truth, *regression_plots, **kwargs):
     """
     # Initialize the plot with XKCD themes
     pyplot.figure()
-    pyplot.xkcd()
     ax = pyplot.gca()
     ax.spines['bottom'].set_color('#91A2C4')
     ax.spines['top'].set_color('#91A2C4')
