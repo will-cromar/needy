@@ -20,7 +20,17 @@ while True:
     try:
         runs = int(stdin.readline())
     except:
-        print "Not a valid number"
+        print "Not a valid int"
+        continue
+
+    print "Enter a number of articles >= 0"
+    articles = None
+    try:
+        articles = int(stdin.readline())
+    except:
+        print "Not a valid int"
+        continue
+
 
     print "Building report for", company
-    ReportGenerator.genReport(ticker, runs, 0)
+    ReportGenerator.genReport(ticker, runs, articles)
