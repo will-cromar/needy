@@ -46,7 +46,7 @@ def genReport(company, runs, newsCount):
     report.drawCentredString(4.5*width/10,height/3+75,"Predicted Price: $ %.2f" %predictedPrice)
 
     newsUrls = getNews(getCompanyName(company), newsCount)
-    if(len(newsUrls)>0):
+    if(len(newsUrls)>0 ):
         report.drawCentredString(3*width/10, height/3+45, "In The News:")
         positivity = overallSentiment(newsUrls, verbose=True)
 
