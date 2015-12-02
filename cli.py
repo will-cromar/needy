@@ -15,6 +15,7 @@ while True:
         print "Not a valid ticker"
         continue
 
+    print "Enter a number of runs > 1"
     runs = None
     try:
         runs = int(stdin.readline())
