@@ -58,10 +58,10 @@ def genReport(company, runs, newsCount):
         body.fontSize = 8
         body.fontName = "HumorSans"
         body.textColor = HexColor('#91A2C4')
-        for i in range(0, 3):
+        for i in range(1, 4):
             P = Paragraph(summarize(newsUrls[i]), body)
             w, h = P.wrap(width/3.5, height/10)
-            P.drawOn(report, i*width/3+20, height/3-h+15)
+            P.drawOn(report, (i-1)*width/3+20, height/3-h+15)
         #report.drawCentredString(4*width/10, height/5, summarize(newsUrls[1]))
     report.showPage()
     report.save()
@@ -72,9 +72,3 @@ def getCompanyName(ticker):
     yjson = yahoo.json()
     return yjson["ResultSet"]["Result"][0]["name"]
 
-
-
-#dji = ["MMM", "AXP", "AAPL", "BA", "CAT", "CVX", "CSCO", "KK", "DD", "XM", "GE", "GS", "HD", "INTC", "IBM", "JNJ", "JPM", "MCD", "MSFT", "NKE", "PFE", "PG", "TRV", "UNH", "UTX", "VZ", "V", "WMT", "DIS"]
-
-#for i in ['GOOG']:
-#    genReport(i,2000,50)
