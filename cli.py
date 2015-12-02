@@ -15,5 +15,11 @@ while True:
         print "Not a valid ticker"
         continue
 
+    runs = None
+    try:
+        runs = int(stdin.readline())
+    except:
+        print "Not a valid number"
+
     print "Building report for", company
-    ReportGenerator.genReport(ticker)
+    ReportGenerator.genReport(ticker, runs, 0)

@@ -74,7 +74,7 @@ def getCompanyName(ticker):
 
 
 
-dji = ["MMM", "AXP", "AAPL", "BA", "CAT", "CVX", "CSCO", "KK", "DD", "XM", "GE", "GS", "HD", "INTC", "IBM", "JNJ", "JPM", "MCD", "MSFT", "NKE", "PFE", "PG", "TRV", "UNH", "UTX", "VZ", "V", "WMT", "DIS"]
+#dji = ["MMM", "AXP", "AAPL", "BA", "CAT", "CVX", "CSCO", "KK", "DD", "XM", "GE", "GS", "HD", "INTC", "IBM", "JNJ", "JPM", "MCD", "MSFT", "NKE", "PFE", "PG", "TRV", "UNH", "UTX", "VZ", "V", "WMT", "DIS"]
 
-for i in ['GOOG']:
-    genReport(i,2000,50)
+#for i in ['GOOG']:
+#    genReport(i,2000,50)
