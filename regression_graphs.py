@@ -44,4 +44,4 @@ def graphRegressionsOverTime(ticker, ground_truth, *regression_plots, **kwargs):
     pyplot.title(title)
     pyplot.xlabel(xlabel)
     pyplot.ylabel(ylabel)
-    pyplot.savefig(ticker + ".png", transparent=True)
+    pyplot.savefig(ticker + "linear.png", transparent=True)

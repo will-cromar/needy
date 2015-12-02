@@ -38,17 +38,13 @@ def test2():
 
     graphRegressionsOverTime(dataset)
 
-def recentTrendTest():
+def recentTrendTest(ticker):
     samples = 50
     lookback = 4 * samples
 
-    data = getStockPrices("GOOG", frequency="daily")
+    data = getStockPrices(ticker, frequency="daily")
     dates, prices = preprocessStocks(data[-lookback:])
     dataset = Dataset(dates, prices, mode="preformatted")
     recentTrend = graphRecentTrend(dataset, samples)
 
-    graphRegressionsOverTime("GOOG", dataset, recentTrend, title="Test of recent trends")
-
-getStockPrices("GOOGL", update=True, frequency="daily")
-getStockPrices("AAPL", update=True, frequency="daily")
-recentTrendTest()
+    graphRegressionsOverTime(ticker, dataset, recentTrend, title="")
