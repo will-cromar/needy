@@ -2,14 +2,6 @@ _author_ = 'Luke'
 
 from price_parsing import *
 
-# data = getStockPrices("GOOG", frequency="daily")
-# trainData, testData = splitByDate(data, '9/21/2015')
-# xTrain, yTrain = preprocessStocks(trainData)
-# xTest, yTest = preprocessStocks(testData)
-# # xTrain, yTrain = preprocessStocks(data)
-# # xTest = xTrain
-# # yTest = yTrain
-
 def normalize(xTrain, yTrain, xTest, yTest):
     # time factor to normalize time data to
     firstTime = xTrain[0]
