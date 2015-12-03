@@ -1,5 +1,6 @@
 import urllib2
 import newspaper
+from pybing import Bing
 import simplejson
 from newspaper import Article
 from sentiment_analysis import guessSentiment, overallSentiment
@@ -7,22 +8,25 @@ from sentiment_analysis import guessSentiment, overallSentiment
 
 def getNews(company, num):
     urls= []
-    paper = newspaper.build('http://www.cnn.com/', memoize_articles=False)
+    keyBing = 'TKr6QzuNP0P6RxsdZy/ddGeWc5Vf6dXX7UWPR9CD8XY'
+    credentialBing = 'Basic ' + (':%s' % keyBing).encode('base64')[:-1] # the "-1" is to remove the trailing "\n" which encode adds
+    searchString = validizeCompany(company)
+    top = num
+    offset = 0
+
+    url = 'https://api.datamarket.azure.com/Bing/Search/v1/News?' + \
+      'Query=%s&$top=%d&$skip=%d&$format=json' % (searchString, top, offset)
+    request = urllib2.Request(url)
+    request.add_header('Authorization', credentialBing)
+    requestOpener = urllib2.build_opener()
+    response = requestOpener.open(request)
+    results = simplejson.load(response);
     for i in range(0, num):
-        urls.append(paper.article_urls()[i])
-        # try:
-        #     url = ('https://ajax.googleapis.com/ajax/services/search/news?' +
-        #     'v=1.0&q='+validizeCompany(company)+'&userip=INSERT-USER-IP&start='+str(i*4))
-        #     request = urllib2.Request(url,  None)
-        #     response = urllib2.urlopen(request)
-        #     print response
-        #     # Process the JSON string.
-        #     results = simplejson.load(response)
-        #     print results
-        #     for j in results['responseData']['results']:
-        #         urls.append(j['unescapedUrl'])
-        # except:
-        #     print "Failed to load results from page ", (i+1)
+        try:
+            print str(i)+". "+str(results['d']['results'][i]['Url'])
+            urls.append(results['d']['results'][i]['Url']);
+        except:
+            print("Failed to find article "+str(i))
     return urls
 
 def summarize(url):
@@ -55,6 +59,5 @@ def summarize(url):
     return a.summary
 
 def validizeCompany(company):
-    return company.replace(" ", "%20")
-
+    return "%27"+company.replace(" ", "+")+"%27"
 

@@ -14,11 +14,6 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import requests
 
-
-def hello(c):
-    c.drawString(100, 100, 'Hello World')
-
-
 def genReport(company, runs, newsCount):
     print "starting generation with ", runs, " runs and ", newsCount, " articles."
     report = canvas.Canvas(company+".pdf", pagesize=letter)
@@ -70,4 +65,3 @@ def getCompanyName(ticker):
     yahoo = requests.get("http://d.yimg.com/autoc.finance.yahoo.com/autoc?query="+ticker+"&region=1&lang=en")
     yjson = yahoo.json()
     return yjson["ResultSet"]["Result"][0]["name"]
-
