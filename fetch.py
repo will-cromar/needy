@@ -2,8 +2,7 @@ import urllib2
 import newspaper
 import simplejson
 from newspaper import Article
-from news import overallSentiment
-from sentiment_analysis import guessSentiment
+from sentiment_analysis import guessSentiment, overallSentiment
 
 
 def getNews(company, num):

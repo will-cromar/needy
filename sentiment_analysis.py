@@ -1,4 +1,6 @@
+import requests
 import string
+import justext
 
 import util
 
@@ -109,3 +111,29 @@ def guessSentiment(text):
         return "Positive"
     else:                   # 0: Negative sentiment
         return "Negative"
+
+def overallSentiment(urls, verbose=False):
+    """
+    Guesses the overall sentiment of the given articles
+    :param urls: List of URLs of articles to read
+    :param verbose: Print status updates and specific verdicts
+    :return: The proportion of articles that are positive
+    """
+    sentiments = []
+
+    for url in urls:
+        try:
+            if verbose: print "Downloading", url + "..."
+            response = requests.get(url)
+            paragraphs = justext.justext(response.content, justext.get_stoplist("English"))
+            allText = "\n".join([paragraph.text for paragraph in paragraphs])
+            if verbose: print "Reading..."
+            sentiment = guessSentiment(allText)
+            if verbose: print "Verdict:", sentiment
+            sentiments.append(sentiment)
+        except:
+            if verbose: print "Failed to download", url
+
+
+    positiveCount = len(filter(lambda x: x == "Positive", sentiments))
+    return float(positiveCount) / len(urls)
