@@ -15,6 +15,13 @@ from reportlab.lib.pagesizes import letter
 import requests
 
 def genReport(company, runs, newsCount):
+    """
+    Generates a report on a company, including projected prices, historical trends, and the current zeitgeist surround it
+    :param company: The stock ticker for the target company
+    :param runs: The number of times the neural network should be trained. Higher generally leads to increased accuracy, but will take longer.
+    :param newsCount: The number of news sources to be taken into account. Up to three will be summarized at the bottom of the report
+    :return: Saves a pdf titled [ticker].pdf, containing the report
+    """
     print "starting generation with ", runs, " runs and ", newsCount, " articles."
     report = canvas.Canvas(company+".pdf", pagesize=letter)
     #Embedding the font into the pdf so it can render
@@ -80,7 +87,13 @@ def genReport(company, runs, newsCount):
     report.showPage()
     report.save()
 
+
 def getCompanyName(ticker):
+    """
+    Uses Yahoo Finance to retrieve the full name of a company based on it's ticker
+    :param ticker: The ticker of the company to get the full name of
+    :return: The full name of the company
+    """
     yahoo = requests.get("http://d.yimg.com/autoc.finance.yahoo.com/autoc?query="+ticker+"&region=1&lang=en")
     yjson = yahoo.json()
     return yjson["ResultSet"]["Result"][0]["name"]
