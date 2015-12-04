@@ -1,6 +1,9 @@
 _author_ = 'luke'
-
 import time
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+import matplotlib
+from xkcd import xkcdify
 
 def trainNetwork(trainer, runs, verbose):
 
@@ -18,11 +21,6 @@ def trainNetwork(trainer, runs, verbose):
     averageTimePerEpoch = sum(epochTimes)/len(epochTimes)
 
     return totalTime, averageTimePerEpoch, trainerErrorValues, epochTimes
-
-import matplotlib.pyplot as plt
-from matplotlib import font_manager
-import matplotlib
-from xkcd import xkcdify
 
 def graphOutput(xTrain, yTrain, xTest, yTest, futurePredictions, trainingPredictions, ticker):
     plt.figure(1)
