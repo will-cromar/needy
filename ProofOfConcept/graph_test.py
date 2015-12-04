@@ -1,11 +1,12 @@
 # luke
 
-from pybrain.datasets import SupervisedDataSet, SequentialDataSet
-from pybrain.tools.shortcuts import buildNetwork
-from pybrain.supervised.trainers import BackpropTrainer, Trainer
-from pybrain.structure.modules import TanhLayer, LinearLayer, MdrnnLayer, LSTMLayer, GaussianLayer, SoftmaxLayer
 import matplotlib.pyplot as plt
-import time
+
+from pybrain.datasets import SupervisedDataSet
+from pybrain.tools.shortcuts import buildNetwork
+from pybrain.supervised.trainers import BackpropTrainer
+from pybrain.structure.modules import TanhLayer
+
 from normalizer import normalize
 from normalizer import denormalize
 from price_parsing import *

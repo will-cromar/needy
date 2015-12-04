@@ -2,8 +2,7 @@ from sklearn import linear_model
 from matplotlib import pyplot
 
 from price_parsing import *
-from ProofOfConcept.xkcd import xkcdify
-
+from xkcd import xkcdify
 from datetime import datetime
 
 DEFAULT_SAMPLES = 50

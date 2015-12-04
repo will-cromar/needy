@@ -3,15 +3,13 @@ from pybrain.datasets import SupervisedDataSet
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.structure.modules import TanhLayer
-import matplotlib.pyplot as plt
+
 from normalizer import normalize
 from normalizer import denormalize
 from price_parsing import *
-import matplotlib
-import matplotlib.font_manager as font_manager
-from xkcd import xkcdify
 from nueral_network_functions import trainNetwork
 from nueral_network_functions import graphOutput
+
 
 def graphNN(ticker, date, runs, verbose):
 
