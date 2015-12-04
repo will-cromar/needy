@@ -3,6 +3,9 @@ from sys import stdin
 
 # Entry point for Needy
 
+import nltk
+nltk.data.path.append("/home/will/build/nltk_data")
+
 while True:
     # Get the ticker name
     print "Enter the name of a stock ticker, or \"exit\""
