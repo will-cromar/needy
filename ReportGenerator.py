@@ -33,7 +33,6 @@ def genReport(company, runs, newsCount):
     print("Creating report on "+company)
     predictedPrice = graphNN(company, '11/24/15', runs, True)[0]
     graphRecentTrend(company)
-    #report.drawImage(company+"NN.png", 1.75*width/10, 35*height/80, height=310, width=400, mask='auto')
     report.drawImage(company+"NN.png", 4.8*width/10, 36*height/80, height=300, width=300, mask='auto')
     report.drawImage(company+"linear.png", 1*width/10, 42*height/80, height=200, width=200, mask='auto')
     report.setFont("HumorSans", 25)
@@ -60,6 +59,7 @@ def genReport(company, runs, newsCount):
     report.showPage()
     report.save()
 
+def createHeader(ticker):
 
 def getCompanyName(ticker):
     yahoo = requests.get("http://d.yimg.com/autoc.finance.yahoo.com/autoc?query="+ticker+"&region=1&lang=en")

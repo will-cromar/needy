@@ -1,9 +1,6 @@
 import urllib2
-import newspaper
-from pybing import Bing
 import simplejson
 from newspaper import Article
-from sentiment_analysis import guessSentiment, overallSentiment
 
 
 def getNews(company, num):
@@ -13,18 +10,17 @@ def getNews(company, num):
     searchString = validizeCompany(company)
     top = num
     offset = 0
-
     url = 'https://api.datamarket.azure.com/Bing/Search/v1/News?' + \
       'Query=%s&$top=%d&$skip=%d&$format=json' % (searchString, top, offset)
     request = urllib2.Request(url)
     request.add_header('Authorization', credentialBing)
     requestOpener = urllib2.build_opener()
     response = requestOpener.open(request)
-    results = simplejson.load(response);
+    results = simplejson.load(response)
     for i in range(0, num):
         try:
             print str(i)+". "+str(results['d']['results'][i]['Url'])
-            urls.append(results['d']['results'][i]['Url']);
+            urls.append(results['d']['results'][i]['Url'])
         except:
             print("Failed to find article "+str(i))
     return urls
