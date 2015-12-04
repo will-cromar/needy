@@ -1,6 +1,6 @@
 # needy
 
-Don't use this for actual investments.
+Don't use this for actual investments. Also, please don't grade what's in ProofOfConcept.
 
 Work breakdown:
 - Will: Pickle utilities, price parsing/preprocessing, recent trend regression model, sentiment analysis, command line interface
