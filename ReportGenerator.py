@@ -52,7 +52,7 @@ def genReport(company, runs, newsCount):
         body.fontSize = 8
         body.fontName = "HumorSans"
         body.textColor = HexColor('#91A2C4')
-        for i in range(1, 4):
+        for i in range(0, 3):
             P = Paragraph(summarize(newsUrls[i]), body)
             w, h = P.wrap(width/3.5, height/10)
             P.drawOn(report, (i-1)*width/3+20, height/3-h+15)
