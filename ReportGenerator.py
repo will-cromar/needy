@@ -50,24 +50,33 @@ def genReport(company, runs, newsCount):
     report.setFont("HumorSans", 25)
     report.drawCentredString(4.5*width/10,height/3+75,"Predicted Price: $ %.2f" %predictedPrice)
 
+    #Drawing news summaries
     newsUrls = getNews(getCompanyName(company), newsCount)
+
+    #If we failed to download news articles, we will avoid drawing any of the news section
     if(len(newsUrls) > 0):
+
+        #Summary of the percieved positivity of all grabbed articles. (Num positive / num articles)
         report.drawCentredString(3*width/10, height/3+45, "In The News:")
         positivity = overallSentiment(newsUrls, verbose=True)
-
         report.drawCentredString(6*width/10, height/3+45, str(100*positivity)+"% Positive")
 
         report.setFont("HumorSans", 8)
+
+        #Getting the paragraph form set up for writing summaries
         styleSheet = getSampleStyleSheet()
         body = styleSheet['BodyText']
         body.fontSize = 8
         body.fontName = "HumorSans"
         body.textColor = HexColor('#91A2C4')
-        for i in range(0, 3):
+
+        #Writes summaries for the first three(or less if less retrieved) articles at the bottom of the page
+        for i in range(0, min(3,len(newsUrls))):
             P = Paragraph(summarize(newsUrls[i]), body)
             w, h = P.wrap(width/3.5, height/10)
             P.drawOn(report, (i-1)*width/3+20, height/3-h+15)
-        #report.drawCentredString(4*width/10, height/5, summarize(newsUrls[1]))
+
+    #Saves the report so the user can access it
     report.showPage()
     report.save()
 
