@@ -62,6 +62,12 @@ def getDateRange(prices, before, after):
     return prices.truncate(before=before, after=after)
 
 def splitByDate(prices, date):
+    """
+    Split prices into two parts at given date
+    :param prices: price data to split
+    :param date: place to split
+    :return: prices before data, prices after date
+    """
     return prices.truncate(after=date), prices.truncate(before=(date))
 
 def preprocessStocks(priceData):
