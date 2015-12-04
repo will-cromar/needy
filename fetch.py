@@ -11,8 +11,10 @@ def getNews(company, num):
     :return: A list of urls to news articles regarding the company
     """
     urls= []
+
+    #Using the Bing Azure Web Services to search bing news. Needs to have credentials in order to actually use it though
     keyBing = 'TKr6QzuNP0P6RxsdZy/ddGeWc5Vf6dXX7UWPR9CD8XY'
-    credentialBing = 'Basic ' + (':%s' % keyBing).encode('base64')[:-1] # the "-1" is to remove the trailing "\n" which encode adds
+    credentialBing = 'Basic ' + (':%s' % keyBing).encode('base64')[:-1]
     searchString = validizeCompany(company)
     top = num
     offset = 0
@@ -23,6 +25,8 @@ def getNews(company, num):
     requestOpener = urllib2.build_opener()
     response = requestOpener.open(request)
     results = simplejson.load(response)
+
+    #Adds all the articles from the search into a list to be returned to the user
     for i in range(0, num):
         try:
             print str(i)+". "+str(results['d']['results'][i]['Url'])
@@ -41,6 +45,8 @@ def summarize(url):
     a.download()
     i = 0
     skip = False
+
+    #If the article fails to download multiple times, it likely wont download, and therefore we stop attempting to summarize
     while not a.is_downloaded:
         if i>10:
             break
@@ -52,6 +58,7 @@ def summarize(url):
 
     a.parse()
 
+    #Similar thought process here, if the article is unable to be parsed after multiple times, we quit out
     while not a.is_parsed:
         if i>10:
             skip = True
@@ -60,7 +67,6 @@ def summarize(url):
         a.parse()
     if (not a.is_parsed):
         return None
-
 
     a.nlp()
     return a.summary
