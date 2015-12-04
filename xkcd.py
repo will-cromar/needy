@@ -1,4 +1,4 @@
-_author_ = 'luke'
+XCKD_COLOR = '#91A2C4'
 
 def xkcdify(plt):
     """
@@ -7,10 +7,10 @@ def xkcdify(plt):
     :return: None
     """
     ax = plt.gca()
-    ax.spines['bottom'].set_color('#91A2C4')
-    ax.spines['top'].set_color('#91A2C4')
-    ax.spines['left'].set_color('#91A2C4')
-    ax.spines['right'].set_color('#91A2C4')
-    ax.tick_params(axis='both', colors='#91A2C4')
-    ax.xaxis.label.set_color('#91A2C4')
-    ax.yaxis.label.set_color('#91A2C4')
+    ax.spines['bottom'].set_color(XCKD_COLOR)
+    ax.spines['top'].set_color(XCKD_COLOR)
+    ax.spines['left'].set_color(XCKD_COLOR)
+    ax.spines['right'].set_color(XCKD_COLOR)
+    ax.tick_params(axis='both', colors=XCKD_COLOR)
+    ax.xaxis.label.set_color(XCKD_COLOR)
+    ax.yaxis.label.set_color(XCKD_COLOR)
