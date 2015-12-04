@@ -1,12 +1,12 @@
 from reportlab.lib.colors import HexColor
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
-from reportlab.platypus import Paragraph
 from reportlab.pdfbase.ttfonts import TTFont
-from recent_trend import graphRecentTrend
+from reportlab.platypus import Paragraph
 
 from fetch import getNews,  summarize
-from ProofOfConcept.graph_test_func import graphNN
+from neural_network import graphNN
+from recent_trend import graphRecentTrend
 from sentiment_analysis import overallSentiment
 
 __author__ = 'tylervanharen'

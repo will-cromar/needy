@@ -7,8 +7,8 @@ from pybrain.structure.modules import TanhLayer
 from normalizer import normalize
 from normalizer import denormalize
 from price_parsing import *
-from nueral_network_functions import trainNetwork
-from nueral_network_functions import graphOutput
+from neural_network_functions import trainNetwork
+from neural_network_functions import graphOutput
 
 def graphNN(ticker, date, epochs, verbose):
     """
