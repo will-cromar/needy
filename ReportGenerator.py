@@ -31,7 +31,7 @@ def genReport(company, runs, newsCount):
     report.line(width/32, 43*height/50, 31*width/32, 43*height/50)
     report.line(width/16, 42*height/50, 15*width/16, 42*height/50)
     print("Creating report on "+company)
-    predictedPrice = graphNN(company, '11/24/15', runs)[0]
+    predictedPrice = graphNN(company, '11/24/15', runs, True)[0]
     graphRecentTrend(company)
     #report.drawImage(company+"NN.png", 1.75*width/10, 35*height/80, height=310, width=400, mask='auto')
     report.drawImage(company+"NN.png", 4.8*width/10, 36*height/80, height=300, width=300, mask='auto')
